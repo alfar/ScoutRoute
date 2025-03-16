@@ -1,0 +1,20 @@
+@Host = https://localhost:7520
+
+POST {{Host}}/Payments
+Content-Type: application/json
+
+{
+  "id": "de851dda-70cf-4df8-b522-9a9e7f45678d",
+  "message": "Vesterbakken 28 please :)",
+  "amount": 40,
+  "received": "2025-03-16T21:22:00Z"
+}
+
+###
+
+PATCH {{Host}}/Payments/de851dda-70cf-4df8-b522-9a9e7f45678d/Address
+Content-Type: application/json
+
+{
+  "addressId": "de851dda-70cf-4df8-b522-9a9e7f45678e"
+}
