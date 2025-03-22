@@ -6,13 +6,11 @@ using Microsoft.AspNetCore.Routing;
 using ScoutRoute.Payments.Commands;
 using ScoutRoute.Payments.Domain;
 using ScoutRoute.Payments.Mapping.Commands;
+using ScoutRoute.Payments.Contracts.Commands;
+using ScoutRoute.Payments.Contracts.Endpoints;
 
 namespace ScoutRoute.Payments.Endpoints
 {
-    public class AssignAddressDto
-    {
-        public required AddressId AddressId { get; set; }
-    }
 
     internal static class AssignAddressEndpoint
     {
@@ -20,12 +18,14 @@ namespace ScoutRoute.Payments.Endpoints
 
         public static IEndpointRouteBuilder MapAssignAddress(this IEndpointRouteBuilder app)
         {
-            app.MapPatch("/{paymentId:guid}/Address", async (PaymentId paymentId, AssignAddressDto dto, IMediator mediator) =>
-            {
-                var result = await mediator.Send(dto.ToCommand(paymentId));
+            app
+                .MapPut(PaymentEndpoints.AssignAddress, async (PaymentId paymentId, AssignAddressCommand dto, IMediator mediator) =>
+                {
+                    var result = await mediator.Send(dto.ToRequest(paymentId));
 
-                return result.Success ? Results.NoContent() : Results.NotFound();
-            });
+                    return result.Success ? Results.NoContent() : Results.NotFound();
+                })
+                .WithName(Name);
 
             return app;
         }

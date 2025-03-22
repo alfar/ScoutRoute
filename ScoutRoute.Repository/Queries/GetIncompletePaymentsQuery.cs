@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using ScoutRoute.Payments.Contracts.Queries;
+using ScoutRoute.Payments.Mapping.Commands;
 using ScoutRoute.Payments.Repository;
 
 namespace ScoutRoute.Payments.Queries
@@ -20,7 +22,7 @@ namespace ScoutRoute.Payments.Queries
         {
             var payments = await _paymentReader.GetIncompletePaymentsAsync();
 
-            return new GetIncompletePaymentsQueryResult(payments);
+            return new GetIncompletePaymentsQueryResult(payments.ToDtos());
         }
     }
 }

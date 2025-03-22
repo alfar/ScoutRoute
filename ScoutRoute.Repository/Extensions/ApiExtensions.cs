@@ -19,10 +19,10 @@ namespace ScoutRoute.Payments.Extensions
         public static IEndpointRouteBuilder MapPaymentEndpoints(this IEndpointRouteBuilder app)
         {
             app
-                .MapGroup("/Payments")
-                    .MapAssignAddress()
-                    .MapRegisterPayment()
-                    .MapGetIncompletePayments();
+                .MapAssignAddress()
+                .MapRegisterPayment()
+                .MapCompletePayment()
+                .MapGetIncompletePayments();
 
             return app;
         }

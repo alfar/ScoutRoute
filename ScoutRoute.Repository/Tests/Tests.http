@@ -12,9 +12,23 @@ Content-Type: application/json
 
 ###
 
-PATCH {{Host}}/Payments/de851dda-70cf-4df8-b522-9a9e7f45678d/Address
+PUT {{Host}}/Payments/de851dda-70cf-4df8-b522-9a9e7f45678d/Address
 Content-Type: application/json
 
 {
   "addressId": "de851dda-70cf-4df8-b522-9a9e7f45678e"
 }
+
+###
+PUT {{Host}}/Payments/de851dda-70cf-4df8-b522-9a9e7f45678d/Completed
+
+###
+
+GET {{Host}}/Payments/Incomplete
+
+###
+
+GET {{Host}}/Payments
+
+###
+

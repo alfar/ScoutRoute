@@ -1,22 +1,20 @@
 ﻿using MediatR;
 using ScoutRoute.Payments.Domain;
 using ScoutRoute.Payments.Repository;
-using StackExchange.Redis;
-using System.Text.Json;
 
 namespace ScoutRoute.Payments.Commands
 {
-    public class AssignAddressCommand : IRequest<AssignAddressCommandResult>
+    public class AssignAddressRequest : IRequest<AssignAddressResult>
     {
         public required PaymentId PaymentId { get; init; }
         public required AddressId AddressId { get; init; }
     }
 
-    public record AssignAddressCommandResult(bool Success);
+    public record AssignAddressResult(bool Success);
 
-    internal class AssignAddressCommandHandler(IPaymentReader reader, IPaymentWriter writer) : IRequestHandler<AssignAddressCommand, AssignAddressCommandResult>
+    internal class AssignAddressHandler(IPaymentReader reader, IPaymentWriter writer) : IRequestHandler<AssignAddressRequest, AssignAddressResult>
     {
-        public async Task<AssignAddressCommandResult> Handle(AssignAddressCommand request, CancellationToken cancellationToken)
+        public async Task<AssignAddressResult> Handle(AssignAddressRequest request, CancellationToken cancellationToken)
         {
             var payment = await reader.GetPaymentByIdAsync(request.PaymentId);
 

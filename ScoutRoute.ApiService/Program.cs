@@ -1,8 +1,10 @@
-using StronglyTypedIds;
+using MongoDB.Bson.Serialization;
 using Scalar.AspNetCore;
 using ScoutRoute.ApiService.JsonConverters;
 using ScoutRoute.Payments;
 using ScoutRoute.Payments.Extensions;
+using ScoutRoute.Shared.Extensions;
+using ScoutRoute.Shared.ValueTypes.MoneyAmounts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,9 +29,17 @@ builder.Services.ConfigureHttpJsonOptions(options =>
     options.SerializerOptions.Converters.Add(new MoneyJsonConverter());
 });
 
+
+builder.AddMongoDBClient("scoutroute", null, config =>
+{
+
+});
+
 builder.AddRedisClient("cache");
 
 var app = builder.Build();
+
+app.UseScoutRouteDefaults();
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();

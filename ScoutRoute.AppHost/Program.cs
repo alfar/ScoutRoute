@@ -1,17 +1,24 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
 var cache = builder.AddRedis("cache");
-var elasticsearch = builder.AddElasticsearch("elasticsearch");
+//var elasticsearch = builder.AddElasticsearch("elasticsearch");
+
+var mongo = builder.AddMongoDB("mongo").WithMongoExpress().WithLifetime(ContainerLifetime.Persistent);
+
+var mongodb = mongo.AddDatabase("scoutroute");
 
 var apiService = builder.AddProject<Projects.ScoutRoute_ApiService>("apiservice")
-    .WithReference(elasticsearch)
+    .WithReference(mongodb)
+    .WaitFor(mongodb)
+//    .WithReference(elasticsearch)
     .WithReference(cache);
 
-builder.AddProject<Projects.ScoutRoute_Web>("webfrontend")
+/*builder.AddProject<Projects.ScoutRoute_Web>("webfrontend")
     .WithExternalHttpEndpoints()
     .WithReference(cache)
     .WaitFor(cache)
     .WithReference(apiService)
     .WaitFor(apiService);
+*/
 
 builder.Build().Run();

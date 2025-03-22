@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using ScoutRoute.Payments.Contracts.Endpoints;
 using ScoutRoute.Payments.Domain;
 using ScoutRoute.Payments.Queries;
 using ScoutRoute.Shared.ValueTypes.MoneyAmounts;
@@ -20,7 +21,7 @@ namespace ScoutRoute.Payments.Endpoints
         public static IEndpointRouteBuilder MapGetIncompletePayments(this IEndpointRouteBuilder app)
         {
             app
-                .MapGet("/Incomplete", async (IMediator mediator) =>
+                .MapGet(PaymentEndpoints.GetIncompletePayments, async (IMediator mediator) =>
                 {
                     var result = await mediator.Send(new GetIncompletePaymentsQuery());
 
