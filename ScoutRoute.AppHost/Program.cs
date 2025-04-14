@@ -7,9 +7,13 @@ var mongo = builder.AddMongoDB("mongo").WithMongoExpress().WithLifetime(Containe
 
 var mongodb = mongo.AddDatabase("scoutroute");
 
+var eventstore = builder.AddEventStore("scoutevents");
+
 var apiService = builder.AddProject<Projects.ScoutRoute_ApiService>("apiservice")
     .WithReference(mongodb)
     .WaitFor(mongodb)
+    .WithReference(eventstore)
+    .WaitFor(eventstore)
 //    .WithReference(elasticsearch)
     .WithReference(cache);
 

@@ -1,10 +1,11 @@
-using MongoDB.Bson.Serialization;
 using Scalar.AspNetCore;
 using ScoutRoute.ApiService.JsonConverters;
 using ScoutRoute.Payments;
 using ScoutRoute.Payments.Extensions;
+using ScoutRoute.Routes.Endpoints;
+using ScoutRoute.Routes.Extensions;
+using ScoutRoute.Routes.Repository.ReadModels;
 using ScoutRoute.Shared.Extensions;
-using ScoutRoute.Shared.ValueTypes.MoneyAmounts;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,13 @@ builder.Services.AddProblemDetails();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
+{
+    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+}));
+
 builder.Services.AddPaymentServices();
+builder.Services.AddRouteServices();
 
 builder.Services.AddMediatR(cfg =>
 {
@@ -35,9 +42,13 @@ builder.AddMongoDBClient("scoutroute", null, config =>
 
 });
 
+builder.AddEventStoreClient("scoutevents");
+
 builder.AddRedisClient("cache");
 
 var app = builder.Build();
+
+app.UseCors();
 
 app.UseScoutRouteDefaults();
 
@@ -52,7 +63,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapPaymentEndpoints();
+app.MapRouteEndpoints();
 
 app.MapDefaultEndpoints();
+
+await app.Services.GetService<ProjectSubscriber>()!.Subscribe();
 
 app.Run();
