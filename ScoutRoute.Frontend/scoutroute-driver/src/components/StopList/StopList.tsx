@@ -1,20 +1,17 @@
-import { useTranslations } from "next-intl";
+'use client'
+
+import StopCard from "../StopCard/StopCard";
 
 interface StopListProps {
     stops: Stop[];
 }
 
-export default function StopList(props: StopListProps)
-{
-    const t = useTranslations("Index");
-
+export default function StopList(props: StopListProps) {
     return (
-        <table>
-            <tr><th>{t("addressHeader")}</th><th>{t("amountHeader")}</th><th>{t("statusHeader")}</th></tr>
+        <ul className="w-full flex flex-col gap-1">
             {props.stops.map(stop => (
-                <tr key={stop.id}><td>{stop.name}</td><td>{stop.amount}</td><td>{stop.status}</td></tr>
+                <li key={stop.id}><StopCard stop={stop} /></li>
             ))}
-        </table>
-
+        </ul>
     );
 }

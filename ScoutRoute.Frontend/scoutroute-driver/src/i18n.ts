@@ -1,13 +1,13 @@
-import { notFound } from "next/navigation";
-import { getRequestConfig, GetRequestConfigParams, RequestConfig } from "next-intl/server";
+import i18n from "i18next";
+import { initReactI18next } from "react-i18next";
 
-const locales = ["da"];
+import daJSON from "./locale/da.json";
+import enJSON from "./locale/en.json";
 
-export default getRequestConfig(async ({ locale }: GetRequestConfigParams) => {
-  console.log("getConfig");
-  if (!locales.includes(locale ?? 'da')) return notFound();
-
-  return {
-    messages: (await import(`../messages/${locale}.json`)).default,
-  } as RequestConfig;
+i18n.use(initReactI18next).init({
+    resources: {
+        en: { ...enJSON },
+        da: { ...daJSON },
+    },
+    lng: "da",     // Set the initial language of the App
 });

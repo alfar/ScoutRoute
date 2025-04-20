@@ -1,0 +1,12 @@
+{
+    "translation": {
+        "addressHeader": "Address",
+        "amountHeader": "Amount",
+        "statusHeader": "Status",
+        "comment": "Comment:",
+        "taken": "Picked up",
+        "notFound": "Not found",
+        "amount_one": "{{count}} pc.",
+        "amount_other": "{{count}} pcs."
+    }
+}

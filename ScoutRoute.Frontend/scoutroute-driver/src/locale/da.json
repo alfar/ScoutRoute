@@ -1,0 +1,11 @@
+{
+    "translation": {
+        "addressHeader": "Adresse",
+        "amountHeader": "Antal",
+        "statusHeader": "Status",
+        "comment": "Kommentar:",
+        "taken": "Samlet op",
+        "notFound": "Ikke fundet",
+        "amount": "{{count}} stk."
+   }
+}
