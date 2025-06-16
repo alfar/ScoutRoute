@@ -1,11 +1,23 @@
 {
     "translation": {
-        "addressHeader": "Adresse",
-        "amountHeader": "Antal",
-        "statusHeader": "Status",
-        "comment": "Kommentar:",
-        "taken": "Samlet op",
-        "notFound": "Ikke fundet",
-        "amount": "{{count}} stk."
+        "comments": "Kommentarer",
+        "amount": "{{count}} stk.",
+        "sendButton": "Send",
+        "overfilledRouteButton": "Overfyldt",
+        "extraStops": "{{count}} ekstra",
+        "completeRouteButton": "Færdig",
+        "routeOverfilled": "Overfyldt",
+        "routeCompleted": "Færdig",
+        "completedMissingMessage": "({{count}} ikke fundet)",
+        "teamTab": "Patrulje",
+        "routeTab": "Rute",
+        "teamNameLabel": "Patruljenavn",
+        "teamLeadLabel": "Patruljeleder",
+        "phoneLabel": "Telefonnummer",
+        "teamMembersLabel": "Medlemmer",
+        "trailerTypeLabel": "Trailer",
+        "trailerType1": "Havetrailer",
+        "trailerType2": "Stor havetrailer",
+        "trailerType3": "Boogietrailer"
    }
 }

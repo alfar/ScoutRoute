@@ -9,6 +9,7 @@ namespace ScoutRoute.Routes.Contracts.Commands.Stops
         public required string Title { get; init; }
         public required int Quantity { get; init; }
         public required string Comment { get; init; }
-        public required Guid AddressId { get; init; }
+        public required decimal Latitude { get; init; }
+        public required decimal Longitude { get; init; }
     }
 }

@@ -8,6 +8,6 @@ namespace ScoutRoute.Routes.Contracts.Commands.Route
 {
     public class AssignTeamCommand
     {
-        public required Guid TeamId { get; set; }
+        public required Guid TeamId { get; init; }
     }
 }

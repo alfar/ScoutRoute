@@ -1,12 +1,22 @@
 {
     "translation": {
-        "addressHeader": "Address",
-        "amountHeader": "Amount",
-        "statusHeader": "Status",
-        "comment": "Comment:",
-        "taken": "Picked up",
-        "notFound": "Not found",
+        "comments": "Comments",
         "amount_one": "{{count}} pc.",
-        "amount_other": "{{count}} pcs."
+        "amount_other": "{{count}} pcs.",
+        "sendButton": "Send",
+        "overfilledRouteButton": "Overfilled",
+        "completeRouteButton": "Done",
+        "completedMissingMessage": "({{count}} not found)",
+        "extraStops": "{{count}} extra",
+        "teamTab": "Team",
+        "routeTab": "Route",
+        "teamNameLabel": "Team name",
+        "teamLeadLabel": "Team lead",
+        "phoneLabel": "Phone number",
+        "teamMembersLabel": "Members",
+        "trailerTypeLabel": "Trailer",
+        "trailerType1": "Garden trailer",
+        "trailerType2": "Large garden trailer",
+        "trailerType3": "Boogietrailer"
     }
 }

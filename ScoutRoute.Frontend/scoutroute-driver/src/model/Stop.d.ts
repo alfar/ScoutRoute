@@ -1,7 +1,7 @@
 interface Stop {
     id: string;
-    name: string;
-    amount: number;
+    title: string;
+    quantity: number;
     status: number;
     comment: string;
 

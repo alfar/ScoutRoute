@@ -12,9 +12,9 @@ export default function StopPopup(props: StopPopupProps) {
 
     return (
         <Popup>
-            <div>{props.stop.name}</div>
-            <div>{t("amount", { count: props.stop.amount })}</div>
-            <div><StopActions id={props.stop.id} comment={props.stop.comment} onSaved={() => { map.closePopup(); }} /></div>
+            <div>{props.stop.title}</div>
+            <div>{t("amount", { count: props.stop.quantity })}</div>
+            <div><StopActions id={props.stop.id} name={props.stop.title} onSaved={() => { map.closePopup(); }} /></div>
         </Popup>
     )
 }

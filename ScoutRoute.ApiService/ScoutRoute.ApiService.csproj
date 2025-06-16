@@ -11,16 +11,16 @@
     <ProjectReference Include="..\ScoutRoute.Routes\ScoutRoute.Routes.csproj" />
     <ProjectReference Include="..\ScoutRoute.ServiceDefaults\ScoutRoute.ServiceDefaults.csproj" />
     <ProjectReference Include="..\ScoutRoute.Shared\ScoutRoute.Shared.csproj" />
-    <ProjectReference Include="..\ScoutRoute.Teams\ScoutRoute.Teams.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Aspire.MongoDB.Driver.v3" Version="9.1.0" />
     <PackageReference Include="Aspire.StackExchange.Redis" Version="9.1.0" />
     <PackageReference Include="CommunityToolkit.Aspire.EventStore" Version="9.3.0" />
-    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0" />
     <PackageReference Include="Scalar.AspNetCore" Version="2.0.34" />
+    <PackageReference Include="StronglyTypedId" Version="1.0.0-beta08" />
   </ItemGroup>
 
 </Project>

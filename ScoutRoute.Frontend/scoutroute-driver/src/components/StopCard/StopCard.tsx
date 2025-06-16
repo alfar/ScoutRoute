@@ -15,16 +15,18 @@ export default function StopCard(props: StopCardProps) {
 
     const background = props.stop.status === 0 ? "bg-white" : "bg-gray-100";
 
-    const drawerClasses = expanded ? "overflow-hidden h-55 transition-all duration-500" : "overflow-hidden h-0 transition-all duration-500";
+    const drawerClasses = expanded ? "overflow-hidden h-12 transition-all duration-500 mt-2" : "overflow-hidden h-0 transition-all duration-500";
 
     return (
-        <div className={"w-full grid auto-cols-auto border-gray-200 border-2 rounded-md p-3 gap-1 " + background} onClick={() => setExpanded(!expanded)}>
-            <div className="text-2xl">{props.stop.name}</div>
-            <div className="row-span-2 text-right"><StatusIcon status={props.stop.status} /></div>
-            <div>{t('amount', { count: props.stop.amount })}</div>
+        <div className={"w-full border-gray-200 border-2 rounded-md p-3 gap-1 " + background} onClick={() => setExpanded(!expanded)}>
+            <div className="flex justify-between">
+                <div className="text-2xl">{props.stop.title}</div>
+                <div className="text-right"><StatusIcon status={props.stop.status} /></div>
+            </div>
+            <div>{t('amount', { count: props.stop.quantity })}</div>
             <div className="col-span-2">
-                <div className={drawerClasses} onClick={e => { e.preventDefault(); e.stopPropagation(); }}>
-                    <StopActions id={props.stop.id} comment={props.stop.comment} onSaved={() => setExpanded(false)} />
+                <div className={drawerClasses} onClick={e => { e.stopPropagation(); }}>
+                    <StopActions id={props.stop.id} name={props.stop.title} onSaved={() => setExpanded(false)} />
                 </div>
             </div>
         </div>

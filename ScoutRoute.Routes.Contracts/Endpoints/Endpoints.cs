@@ -10,11 +10,31 @@
 
             public const string CreateProject = Base;
             public const string UpdateProject = $"{Base}/{{projectId}}";
+            public const string ShareProject = $"{Base}/{{projectId}}";
             public const string DeleteProject = $"{Base}/{{projectId}}";
 
             public const string GetAll = Base;
             public const string Get = $"{Base}/{{projectId}}";
 
+        }
+
+        public static class Teams
+        {
+            public const string Base = $"{Endpoints.Base}/{{projectId}}/teams";
+
+            public const string CreateTeam = Base;
+            public const string UpdateTeamName = $"{Base}/{{teamId}}/name";
+            public const string UpdateTeamLead = $"{Base}/{{teamId}}/teamLead";
+            public const string UpdateTeamPhone = $"{Base}/{{teamId}}/phone";
+            public const string UpdateTeamTrailerType = $"{Base}/{{teamId}}/trailerType";
+            public const string AddTeamMember = $"{Base}/{{teamId}}/members";
+            public const string RemoveTeamMember = $"{Base}/{{teamId}}/members/{{name}}";
+            public const string DeleteTeam = $"{Base}/{{teamId}}";
+
+            public const string GetAllTeams = Base;
+            public const string GetTeam = $"{Base}/{{teamId}}";
+
+            public const string Rebuild = $"{Endpoints.Base}/rebuild";
         }
 
         public static class Routes
@@ -33,6 +53,7 @@
 
             public const string GetAll = Base;
             public const string Get = $"{Base}/{{routeId}}";
+            public const string GetForTeam = $"{Base}/team/{{teamId}}";
             public const string GetVacant = $"{Base}/vacant";
         }
 

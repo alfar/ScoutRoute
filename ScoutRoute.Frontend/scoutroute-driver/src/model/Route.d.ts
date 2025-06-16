@@ -1,5 +1,9 @@
 interface Route {
     id: string;
-    name: string;
-    stops: Stop[];
+    loaded: boolean;
+    name?: string;
+    stops?: Stop[];
+    extraStops: number;    
+    comments?: string[];
+    status: number;
 }

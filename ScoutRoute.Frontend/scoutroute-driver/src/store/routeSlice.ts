@@ -1,130 +1,139 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { RouteDto } from '../models';
+import { assignTeam, getRoute } from '../api/scoutroute';
+import { RootState } from './store';
+import { fetchTeam } from './teamSlice';
 
 interface RouteState {
     routes: Route[];
 }
 
 const initialState: RouteState = {
-    routes: [
-        {
-            id: "route1",
-            name: "Vesterbakken",
-            stops: [
-                {
-                    id: "stop1",
-                    name: "Lille Ballevej 24",
-                    amount: 1,
-                    status: 0,
-                    comment: "",
-                    coordinates: [
-                        56.18381073,
-                        9.51633061,
-                    ],
-                },
-                {
-                    id: "stop2",
-                    name: "Vesterbakken 30",
-                    amount: 1,
-                    status: 0,
-                    comment: "",
-                    coordinates: [
-                        56.18353861,
-                        9.51727007,
-                    ],
-                },
-                {
-                    id: "stop3",
-                    name: "Vesterbakken 29",
-                    amount: 1,
-                    status: 0,
-                    comment: "",
-                    coordinates: [
-                        56.18355251,
-                        9.51663018,
-                    ],
-                },
-                {
-                    id: "stop4",
-                    name: "Vesterbakken 28",
-                    amount: 1,
-                    status: 0,
-                    comment: "",
-                    coordinates: [
-                        56.18337511,
-                        9.51749841,
-                    ],
-                },
-                {
-                    id: "stop5",
-                    name: "Vesterbakken 27",
-                    amount: 1,
-                    status: 0,
-                    comment: "",
-                    coordinates: [
-                        56.18338716,
-                        9.51683127,
-                    ],
-                },
-                {
-                    id: "stop6",
-                    name: "Vesterbakken 26",
-                    amount: 2,
-                    status: 0,
-                    comment: "",
-                    coordinates: [
-                        56.18321469,
-                        9.51772518,
-                    ],
-                },
-                {
-                    id: "stop7",
-                    name: "Vesterbakken 23",
-                    amount: 1,
-                    status: 0,
-                    comment: "",
-                    coordinates: [
-                        56.18311884,
-                        9.51724799,
-                    ],
-                },
-
-            ]
-        }
-    ],
+    routes: [],
 }
 
 interface UpdateStopPayload {
     id: string;
+}
+
+interface RoutePayload {
+    id: string;
+}
+
+interface AddCommentPayload {
+    id: string;
     comment: string;
 }
+
+export const fetchRoute = createAsyncThunk<RouteDto, { projectId: string, routeId: string }, { state: RootState }>(
+    'route/fetchRoute',
+    ({ projectId, routeId }, _thunkApi) => {
+        return getRoute(projectId, routeId).then(resp => resp.data);
+    }
+);
+
+export const assignRouteTeam = createAsyncThunk<void, { projectId: string, teamId: string, routeId: string }, { state: RootState }>(
+    'route/assignTeam',
+    ({ projectId, teamId, routeId }, _thunkApi) => {
+        return assignTeam(projectId, routeId, { teamId }).then(resp => resp.data);
+    }
+);
 
 export const routeSlice = createSlice({
     name: 'route',
     initialState,
     reducers: {
-        add: (state, action: PayloadAction<Route>) => {
+        addRoute: (state, action: PayloadAction<Route>) => {
             state.routes.push(action.payload);
+        },
+        addComment: (state, action: PayloadAction<AddCommentPayload>) => {
+            const route = state.routes.find(r => r.id === action.payload.id);
+            if (route) {
+                route.comments?.push(action.payload.comment);
+            }
+        },
+        addExtraStop: (state, action: PayloadAction<RoutePayload>) => {
+            const route = state.routes.find(r => r.id === action.payload.id);
+            if (route) {
+                route.extraStops += 1;
+            }
+        },
+        removeExtraStop: (state, action: PayloadAction<RoutePayload>) => {
+            const route = state.routes.find(r => r.id === action.payload.id);
+            if (route && route.extraStops > 0) {
+                route.extraStops -= 1;
+            }
+        },
+        completeRoute: (state, action: PayloadAction<RoutePayload>) => {
+            const route = state.routes.find(r => r.id === action.payload.id);
+            if (route && route.status === 0) {
+                route.status = 1;
+
+                state.routes.sort(r => r.status);
+            }
+        },
+        overfilledRoute: (state, action: PayloadAction<RoutePayload>) => {
+            const route = state.routes.find(r => r.id === action.payload.id);
+            if (route && route.status === 0) {
+                route.status = 2;
+
+                state.routes.sort(r => r.status);
+            }
+        },
+        resetRouteStatus: (state, action: PayloadAction<RoutePayload>) => {
+            const route = state.routes.find(r => r.id === action.payload.id);
+            if (route && route.status !== 0) {
+                route.status = 0;
+
+                state.routes.sort(r => r.status);
+            }
         },
         pickupStop: (state, action: PayloadAction<UpdateStopPayload>) => {
             state.routes.map(r => {
-                const stop = r.stops.find(s => s.id === action.payload.id);
+                const stop = r.stops?.find(s => s.id === action.payload.id);
                 if (stop) {
-                    stop.comment = action.payload.comment;
                     stop.status = 1;
                 }
             });
         },
         notFoundStop: (state, action: PayloadAction<UpdateStopPayload>) => {
             state.routes.map(r => {
-                const stop = r.stops.find(s => s.id === action.payload.id);
+                const stop = r.stops?.find(s => s.id === action.payload.id);
                 if (stop) {
-                    stop.comment = action.payload.comment;
                     stop.status = 2;
                 }
             });
         },
-    }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(fetchTeam.fulfilled, (state, action) => {
+            debugger;
+            state.routes = action.payload.routes?.map(route => ({
+                ...route,
+                loaded: false,
+                extraStops: 0,
+                status: 0,
+            })) || [];
+        });
+
+        //builder.addCase(fetchRoute.pending, (state, action) => {});
+
+        builder.addCase(fetchRoute.fulfilled, (state, action) => {
+            const route = state.routes.find(r => r.id === action.payload.id);
+            if (route) {
+                Object.assign(route, action.payload);
+                route.loaded = true;
+            } else {
+                state.routes.push({
+                    ...action.payload,
+                    loaded: true,
+                    extraStops: 0,
+                    status: 0,
+                });
+            }
+        });
+    },
 });
 
-export const { add, pickupStop, notFoundStop } = routeSlice.actions
-export default routeSlice.reducer
+export const { addRoute, addComment, addExtraStop, removeExtraStop, completeRoute, overfilledRoute, resetRouteStatus, pickupStop, notFoundStop } = routeSlice.actions;
+export default routeSlice.reducer;

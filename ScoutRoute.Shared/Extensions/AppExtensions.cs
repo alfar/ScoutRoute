@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using ScoutRoute.Shared.ValueTypes.MoneyAmounts;
 
 namespace ScoutRoute.Shared.Extensions
@@ -8,7 +10,8 @@ namespace ScoutRoute.Shared.Extensions
     {
         public static IHost UseScoutRouteDefaults(this IHost app)
         {
-            BsonSerializer.RegisterSerializer<Money>(new MoneyBsonSerializer());
+            BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
+            BsonSerializer.RegisterSerializer(new MoneyBsonSerializer());
 
             return app;
         }

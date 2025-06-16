@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Routing;
-using ScoutRoute.Routes.Endpoints.Projects;
-using ScoutRoute.Routes.Endpoints.Routes;
-using ScoutRoute.Routes.Endpoints.Stops;
+using ScoutRoute.Routes.Projects.Endpoints;
+using ScoutRoute.Routes.Routes.Endpoints;
+using ScoutRoute.Routes.Stops.Endpoints;
+using ScoutRoute.Routes.Teams.Endpoints;
 
 namespace ScoutRoute.Routes.Endpoints
 {
@@ -9,13 +10,11 @@ namespace ScoutRoute.Routes.Endpoints
     {
         public static IEndpointRouteBuilder MapRouteEndpoints(this IEndpointRouteBuilder app)
         {
-            app
-                .MapCreateProject()
+            app.MapCreateProject()
                 .MapUpdateProject()
                 .MapDeleteProject()
                 .MapGetProject()
                 .MapGetAllProjects()
-                
                 .MapCreateRoute()
                 .MapUpdateRoute()
                 .MapDeleteRoute()
@@ -25,13 +24,24 @@ namespace ScoutRoute.Routes.Endpoints
                 .MapUnassignTeam()
                 .MapGetAllRoutes()
                 .MapGetRoute()
-
+                .MapGetRoutesForTeamEndpoint()
                 .MapCreateStop()
                 .MapCompleteStop()
                 .MapDeleteStop()
                 .MapAddComment()
                 .MapGetAllStops()
-                .MapGetUnassignedStops();
+                .MapGetUnassignedStops()
+                .MapCreateTeam()
+                .MapUpdateTeamName()
+                .MapUpdateTeamLead()
+                .MapUpdateTeamPhone()
+                .MapUpdateTeamTrailerType()
+                .MapAddTeamMember()
+                .MapRemoveTeamMember()
+                .MapGetAllTeams()
+                .MapGetTeam()
+            //                .MapRebuildTeamProjection()
+            ;
 
             return app;
         }

@@ -18,10 +18,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Shared", "ScoutR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Payments.Contracts", "ScoutRoute.Payments.Contracts\ScoutRoute.Payments.Contracts.csproj", "{D5720208-A272-43CD-B56E-39D68214E399}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Teams", "ScoutRoute.Teams\ScoutRoute.Teams.csproj", "{EDB42C72-CD24-41AA-8D1C-3976B7681B0E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Teams.Contracts", "ScoutRoute.Teams.Contracts\ScoutRoute.Teams.Contracts.csproj", "{782C2DA6-4C76-418C-A0ED-BA3DBE48C1B7}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Routes.Contracts", "ScoutRoute.Routes.Contracts\ScoutRoute.Routes.Contracts.csproj", "{A4C5B4BE-E1B2-4DF0-87F3-B3F07EEF8A24}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Routes", "ScoutRoute.Routes\ScoutRoute.Routes.csproj", "{FD07A1D1-1B60-4D77-BB34-B68CAB96D3FA}"
@@ -64,14 +60,6 @@ Global
 		{D5720208-A272-43CD-B56E-39D68214E399}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5720208-A272-43CD-B56E-39D68214E399}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5720208-A272-43CD-B56E-39D68214E399}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EDB42C72-CD24-41AA-8D1C-3976B7681B0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EDB42C72-CD24-41AA-8D1C-3976B7681B0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EDB42C72-CD24-41AA-8D1C-3976B7681B0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EDB42C72-CD24-41AA-8D1C-3976B7681B0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{782C2DA6-4C76-418C-A0ED-BA3DBE48C1B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{782C2DA6-4C76-418C-A0ED-BA3DBE48C1B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{782C2DA6-4C76-418C-A0ED-BA3DBE48C1B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{782C2DA6-4C76-418C-A0ED-BA3DBE48C1B7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A4C5B4BE-E1B2-4DF0-87F3-B3F07EEF8A24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A4C5B4BE-E1B2-4DF0-87F3-B3F07EEF8A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4C5B4BE-E1B2-4DF0-87F3-B3F07EEF8A24}.Release|Any CPU.ActiveCfg = Release|Any CPU

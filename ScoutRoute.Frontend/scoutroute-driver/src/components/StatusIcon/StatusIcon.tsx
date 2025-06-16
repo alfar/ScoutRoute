@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleCheck } from "@fortawesome/free-regular-svg-icons/faCircleCheck";
-import { faCircleXmark } from "@fortawesome/free-regular-svg-icons/faCircleXmark";
-import { faCircle } from "@fortawesome/free-regular-svg-icons";
+import { faCircleCheck } from "@fortawesome/free-solid-svg-icons/faCircleCheck";
+import { faCircleXmark } from "@fortawesome/free-solid-svg-icons/faCircleXmark";
+import { faCircle } from "@fortawesome/free-solid-svg-icons";
 
 interface StatusIconProps
 {
