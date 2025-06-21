@@ -40,10 +40,11 @@ namespace ScoutRoute.Routes.Routes.Endpoints
                         if (route is null)
                             return Results.NotFound();
 
-                        // Example: Unassign team from route
-                        var ev = route.AddStop(new StopId(command.StopId));
+                        StopId stopId = new(command.StopId);
+                        var ev = route.AddStop(stopId);
 
                         session.Events.Append(routeAggregateId.GetStreamName(), ev);
+                        session.Events.Append(stopId.GetStreamName(), ev);
 
                         await session.SaveChangesAsync(cancellationToken);
 

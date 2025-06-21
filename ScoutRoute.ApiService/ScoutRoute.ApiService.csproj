@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ScoutRoute.Repository\ScoutRoute.Payments.csproj" />
+    <ProjectReference Include="..\ScoutRoute.Payments\ScoutRoute.Payments.csproj" />
     <ProjectReference Include="..\ScoutRoute.Routes\ScoutRoute.Routes.csproj" />
     <ProjectReference Include="..\ScoutRoute.ServiceDefaults\ScoutRoute.ServiceDefaults.csproj" />
     <ProjectReference Include="..\ScoutRoute.Shared\ScoutRoute.Shared.csproj" />

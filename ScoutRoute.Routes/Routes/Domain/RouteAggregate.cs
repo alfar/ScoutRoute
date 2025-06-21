@@ -78,6 +78,32 @@ public class RouteAggregate
         return new RouteUpdatedEvent(ProjectId, RouteId, name);
     }
 
+    public RouteCommentAddedEvent AddComment(string comment)
+    {
+        EnsureNotDeleted();
+        if (string.IsNullOrWhiteSpace(comment))
+            throw new ArgumentException("Comment cannot be empty.", nameof(comment));
+        return new RouteCommentAddedEvent(ProjectId, RouteId, comment);
+    }
+
+    public RouteCompletedEvent MarkComplete()
+    {
+        EnsureNotDeleted();
+        return new RouteCompletedEvent(ProjectId, RouteId);
+    }
+
+    public RouteOverfilledEvent MarkOverfilled()
+    {
+        EnsureNotDeleted();
+        return new RouteOverfilledEvent(ProjectId, RouteId);
+    }
+
+    public RouteExtraStopsChangedEvent ChangeExtraStops(int extraStops)
+    {
+        EnsureNotDeleted();
+        return new RouteExtraStopsChangedEvent(ProjectId, RouteId, extraStops);
+    }
+
     public RouteDeletedEvent Delete()
     {
         EnsureNotDeleted();
@@ -124,4 +150,3 @@ public class RouteAggregate
         Deleted = true;
     }
 }
-

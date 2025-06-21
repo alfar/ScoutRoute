@@ -12,7 +12,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Web", "ScoutRout
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Tests", "ScoutRoute.Tests\ScoutRoute.Tests.csproj", "{BEB384D7-95D9-4B4F-9D11-E6457CD62132}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Payments", "ScoutRoute.Repository\ScoutRoute.Payments.csproj", "{E95F3AF8-7E61-4E9E-99B1-89C4A9F369DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Payments", "ScoutRoute.Payments\ScoutRoute.Payments.csproj", "{E95F3AF8-7E61-4E9E-99B1-89C4A9F369DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Shared", "ScoutRoute.Shared\ScoutRoute.Shared.csproj", "{9DCB6A8B-4134-4496-815B-F9527CDAB0A4}"
 EndProject

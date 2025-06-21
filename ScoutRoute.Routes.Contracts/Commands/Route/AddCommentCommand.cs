@@ -1,4 +1,4 @@
-﻿namespace ScoutRoute.Routes.Contracts.Commands.Stops
+﻿namespace ScoutRoute.Routes.Contracts.Commands.Route
 {
     public class AddCommentCommand
     {

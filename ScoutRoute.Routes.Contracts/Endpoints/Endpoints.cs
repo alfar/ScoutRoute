@@ -15,7 +15,6 @@
 
             public const string GetAll = Base;
             public const string Get = $"{Base}/{{projectId}}";
-
         }
 
         public static class Teams
@@ -55,6 +54,11 @@
             public const string Get = $"{Base}/{{routeId}}";
             public const string GetForTeam = $"{Base}/team/{{teamId}}";
             public const string GetVacant = $"{Base}/vacant";
+
+            public const string MarkComplete = $"{Base}/{{routeId}}/complete";
+            public const string MarkOverfilled = $"{Base}/{{routeId}}/overfilled";
+            public const string ChangeExtraStops = $"{Base}/{{routeId}}/extra-stops";
+            public const string AddComment = $"{Base}/{{routeId}}/comments";
         }
 
         public static class Stops
@@ -64,8 +68,6 @@
             public const string CreateStop = Base;
             public const string CompleteStop = $"{Base}/{{stopId}}/completed";
             public const string DeleteStop = $"{Base}/{{stopId}}";
-
-            public const string AddComment = $"{Base}/{{stopId}}/comments";
 
             public const string GetAll = Base;
             public const string GetUnassigned = $"{Base}/unassigned";

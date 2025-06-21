@@ -1,29 +1,18 @@
-﻿using ScoutRoute.Routes.Contracts.ValueTypes;
-using ScoutRoute.Routes.Domain;
-using ScoutRoute.Routes.Stops.Domain.Events;
-using ScoutRoute.Shared.ValueTypes;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ScoutRoute.Routes.Contracts.ValueTypes;
+using ScoutRoute.Routes.Domain;
+using ScoutRoute.Routes.Routes.Domain.Events;
+using ScoutRoute.Routes.Stops.Domain.Events;
+using ScoutRoute.Shared.ValueTypes;
 
 namespace ScoutRoute.Routes.Stops.Domain
 {
     public class StopAggregate
     {
-        public void Apply(StopCreatedEvent @event)
-        {
-            ProjectId = @event.ProjectId;
-            StopId = @event.StopId;
-            ContactPerson = @event.ContactPerson;
-            Title = @event.Title;
-            Quantity = @event.Quantity;
-            Latitude = @event.Latitude;
-            Longitude = @event.Longitude;
-            Comment = @event.Comment;
-        }
-
         public string Id { get; set; } = "";
 
         private ProjectId ProjectId { get; set; }
@@ -38,18 +27,78 @@ namespace ScoutRoute.Routes.Stops.Domain
         private string Comment { get; set; } = "";
         private RouteId? RouteId { get; set; }
 
-        public static StopCreatedEvent Create(ProjectId projectId, StopId stopId, ContactPerson contactPerson, string title, int quantity, decimal latitude, decimal longitude, string comment, UserId userId)
+        private bool Deleted { get; set; }
+
+        private void EnsureNotDeleted()
         {
-            return new StopCreatedEvent(projectId, stopId, contactPerson, title, quantity, latitude, longitude, comment, userId);
+            if (Deleted)
+                throw new InvalidOperationException($"Stop {StopId} is deleted.");
         }
 
-        public StopAddedToRouteEvent AddToRoute(RouteId routeId)
+        public void Apply(StopCreatedEvent @event)
         {
-            return new StopAddedToRouteEvent(ProjectId, StopId, routeId);
+            ProjectId = @event.ProjectId;
+            StopId = @event.StopId;
+            ContactPerson = @event.ContactPerson;
+            Title = @event.Title;
+            Quantity = @event.Quantity;
+            Latitude = @event.Latitude;
+            Longitude = @event.Longitude;
+            Comment = @event.Comment;
+        }
+
+        public void Apply(StopDeletedEvent @event)
+        {
+            if (@event.StopId == StopId)
+            {
+                Deleted = true;
+            }
+        }
+
+        public void Apply(RouteStopAddedEvent @event)
+        {
+            if (@event.StopId == StopId)
+            {
+                RouteId = @event.RouteId;
+            }
+        }
+
+        public void Apply(RouteStopRemovedEvent @event)
+        {
+            if (@event.StopId == StopId)
+            {
+                RouteId = null;
+            }
+        }
+
+        public static StopCreatedEvent Create(
+            ProjectId projectId,
+            StopId stopId,
+            ContactPerson contactPerson,
+            string title,
+            int quantity,
+            decimal latitude,
+            decimal longitude,
+            string comment,
+            UserId userId
+        )
+        {
+            return new StopCreatedEvent(
+                projectId,
+                stopId,
+                contactPerson,
+                title,
+                quantity,
+                latitude,
+                longitude,
+                comment,
+                userId
+            );
         }
 
         public StopDeletedEvent Delete()
         {
+            EnsureNotDeleted();
             return new StopDeletedEvent(ProjectId, StopId);
         }
     }

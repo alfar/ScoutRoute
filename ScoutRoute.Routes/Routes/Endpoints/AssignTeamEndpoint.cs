@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Routing;
 using ScoutRoute.Routes.Contracts.Commands.Route;
 using ScoutRoute.Routes.Domain;
 using ScoutRoute.Routes.Routes.Domain;
-using ScoutRoute.Routes.Teams.Domain;
-using ScoutRoute.Shared.ValueTypes;
 
 namespace ScoutRoute.Routes.Routes.Endpoints
 {

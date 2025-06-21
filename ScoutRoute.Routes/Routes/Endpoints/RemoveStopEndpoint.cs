@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using ScoutRoute.Routes.Contracts.Commands.Route;
 using ScoutRoute.Routes.Domain;
 using ScoutRoute.Routes.Routes.Domain;
 
@@ -40,9 +39,11 @@ namespace ScoutRoute.Routes.Routes.Endpoints
                         if (route is null)
                             return Results.NotFound();
 
-                        var ev = route.RemoveStop(new StopId(stopId));
+                        var sId = new StopId(stopId);
+                        var ev = route.RemoveStop(sId);
 
                         session.Events.Append(routeAggregateId.GetStreamName(), ev);
+                        session.Events.Append(sId.GetStreamName(), ev);
 
                         await session.SaveChangesAsync(cancellationToken);
 

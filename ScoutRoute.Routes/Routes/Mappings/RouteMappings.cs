@@ -19,7 +19,15 @@ namespace ScoutRoute.Routes.Routes.Mappings
 
         public static RouteDto ToDto(this Route route, IEnumerable<Stop> stops)
         {
-            return new() { Id = route.Id.Value, Name = route.Name, Stops = stops.ToDtos() };
+            return new()
+            {
+                Id = route.Id.Value,
+                Name = route.Name,
+                Stops = stops.ToDtos(),
+                Status = (int)route.Status,
+                ExtraStops = route.ExtraStops,
+                Comments = route.Comments,
+            };
         }
     }
 }
