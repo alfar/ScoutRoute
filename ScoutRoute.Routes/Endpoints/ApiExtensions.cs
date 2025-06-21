@@ -8,44 +8,12 @@ namespace ScoutRoute.Routes.Endpoints
 {
     public static class ApiExtensions
     {
-        public static IEndpointRouteBuilder MapRouteEndpoints(this IEndpointRouteBuilder app)
+        public static IEndpointRouteBuilder MapRoutesEndpoints(this IEndpointRouteBuilder app)
         {
-            app.MapCreateProject()
-                .MapUpdateProject()
-                .MapDeleteProject()
-                .MapGetProject()
-                .MapGetAllProjects()
-                .MapCreateRoute()
-                .MapUpdateRoute()
-                .MapDeleteRoute()
-                .MapAddStop()
-                .MapRemoveStop()
-                .MapAssignTeam()
-                .MapUnassignTeam()
-                .MapMarkComplete()
-                .MapMarkOverfilled()
-                .MapChangeExtraStops()
-                .MapAddComment()
-                .MapGetAllRoutes()
-                .MapGetRoute()
-                .MapGetRoutesForTeamEndpoint()
-                .MapCreateStop()
-                .MapCompleteStop()
-                .MapDeleteStop()
-                .MapGetAllStops()
-                .MapGetUnassignedStops()
-                .MapCreateTeam()
-                .MapUpdateTeamName()
-                .MapUpdateTeamLead()
-                .MapUpdateTeamPhone()
-                .MapUpdateTeamTrailerType()
-                .MapAddTeamMember()
-                .MapRemoveTeamMember()
-                .MapGetAllTeams()
-                .MapGetTeam()
-            //                .MapRebuildTeamProjection()
-            ;
-
+            app.MapProjectEndpoints();
+            app.MapRouteEndpoints();
+            app.MapStopEndpoints();
+            app.MapTeamEndpoints();
             return app;
         }
     }

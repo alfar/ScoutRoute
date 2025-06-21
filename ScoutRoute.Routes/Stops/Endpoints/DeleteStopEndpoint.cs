@@ -2,14 +2,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using MongoDB.Driver;
-using ScoutRoute.Routes.Contracts.Commands.Stops;
 using ScoutRoute.Routes.Domain;
-using ScoutRoute.Routes.Extensions;
-using ScoutRoute.Routes.Projects.Domain;
 using ScoutRoute.Routes.Stops.Domain;
 using ScoutRoute.Shared.ValueTypes;
-using System.Security.Claims;
 
 namespace ScoutRoute.Routes.Stops.Endpoints
 {
@@ -19,25 +14,39 @@ namespace ScoutRoute.Routes.Stops.Endpoints
 
         public static IEndpointRouteBuilder MapDeleteStop(this IEndpointRouteBuilder app)
         {
-            app
-                .MapDelete(Contracts.Endpoints.Endpoints.Stops.DeleteStop, async (Guid projectId, Guid stopId, IDocumentStore store, UserId userId, CancellationToken cancellationToken) =>
-                {
-                    var session = await store.LightweightSerializableSessionAsync(cancellationToken);
-                    var id = new StopId(stopId);
+            app.MapDelete(
+                    Contracts.Endpoints.Endpoints.Stops.DeleteStop,
+                    async (
+                        Guid projectId,
+                        Guid stopId,
+                        IDocumentStore store,
+                        UserId userId,
+                        CancellationToken cancellationToken
+                    ) =>
+                    {
+                        var session = await store.LightweightSerializableSessionAsync(
+                            cancellationToken
+                        );
+                        var id = new StopId(stopId);
 
-                    var stream = await session.Events.FetchForWriting<StopAggregate>(id.GetStreamName(), cancellationToken);
+                        var stream = await session.Events.FetchForWriting<StopAggregate>(
+                            id.GetStreamName(),
+                            cancellationToken
+                        );
 
-                    var stop = stream.Aggregate;
-                    if (stop is null) return Results.NotFound();
+                        var stop = stream.Aggregate;
+                        if (stop is null)
+                            return Results.NotFound();
 
-                    var ev = stop.Delete();
+                        var ev = stop.Delete();
 
-                    session.Events.Append(id.GetStreamName(), ev);
-                    await session.SaveChangesAsync(cancellationToken);
-                    return Results.NoContent();
-                })
-            .RequireAuthorization()
-            .WithName(Name)
+                        session.Events.Append(id.GetStreamName(), ev);
+                        await session.SaveChangesAsync(cancellationToken);
+                        return Results.NoContent();
+                    }
+                )
+                .RequireAuthorization()
+                .WithName(Name)
                 .WithTags("Stops");
             return app;
         }

@@ -67,6 +67,7 @@
 
             public const string CreateStop = Base;
             public const string CompleteStop = $"{Base}/{{stopId}}/completed";
+            public const string NotFoundStop = $"{Base}/{{stopId}}/notfound";
             public const string DeleteStop = $"{Base}/{{stopId}}";
 
             public const string GetAll = Base;

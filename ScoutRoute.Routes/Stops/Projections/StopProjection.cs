@@ -88,11 +88,34 @@ namespace ScoutRoute.Routes.Stops.Projections
             );
 
             ProjectAsync<RouteStopRemovedEvent>(
-                async (e, ops) => {
+                async (e, ops) =>
+                {
                     var stop = await ops.LoadAsync<Stop>(e.StopId);
                     if (stop is not null)
                     {
                         ops.Store(stop with { RouteId = null });
+                    }
+                }
+            );
+
+            ProjectAsync<StopCompletedEvent>(
+                async (e, ops) =>
+                {
+                    var stop = await ops.LoadAsync<Stop>(e.StopId);
+                    if (stop is not null)
+                    {
+                        ops.Store(stop with { Status = StopStatus.PickedUp });
+                    }
+                }
+            );
+
+            ProjectAsync<StopNotFoundEvent>(
+                async (e, ops) =>
+                {
+                    var stop = await ops.LoadAsync<Stop>(e.StopId);
+                    if (stop is not null)
+                    {
+                        ops.Store(stop with { Status = StopStatus.NotFound });
                     }
                 }
             );

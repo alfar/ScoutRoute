@@ -10,19 +10,23 @@ namespace ScoutRoute.Routes.Extensions
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddRouteServices(this IServiceCollection services)
+        public static IServiceCollection AddRoutesServices(this IServiceCollection services)
         {
-            services.AddMarten(options =>
-            {
-                options.Events.StreamIdentity = Marten.Events.StreamIdentity.AsString;
+            services
+                .AddMarten(options =>
+                {
+                    options.Events.StreamIdentity = Marten.Events.StreamIdentity.AsString;
 
-                options.Projections.Add(new ProjectListProjection(), ProjectionLifecycle.Inline);
-                options.Projections.Add(new ProjectProjection(), ProjectionLifecycle.Inline);
-                options.Projections.Add(new StopProjection(), ProjectionLifecycle.Inline);
-                options.Projections.Add(new RouteProjection(), ProjectionLifecycle.Inline);
-                options.Projections.Add(new TeamProjection(), ProjectionLifecycle.Inline);
-            }
-            ).UseNpgsqlDataSource();
+                    options.Projections.Add(
+                        new ProjectListProjection(),
+                        ProjectionLifecycle.Inline
+                    );
+                    options.Projections.Add(new ProjectProjection(), ProjectionLifecycle.Inline);
+                    options.Projections.Add(new StopProjection(), ProjectionLifecycle.Inline);
+                    options.Projections.Add(new RouteProjection(), ProjectionLifecycle.Inline);
+                    options.Projections.Add(new TeamProjection(), ProjectionLifecycle.Inline);
+                })
+                .UseNpgsqlDataSource();
 
             return services;
         }

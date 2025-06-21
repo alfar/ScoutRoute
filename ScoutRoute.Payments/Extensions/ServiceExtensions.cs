@@ -10,7 +10,7 @@ namespace ScoutRoute.Payments.Extensions
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddPaymentServices(this IServiceCollection services)
+        public static IServiceCollection AddPaymentsServices(this IServiceCollection services)
         {
             services.AddScoped<IPaymentWriter, PaymentWriter>();
             services.AddScoped<IPaymentReader, PaymentReader>();

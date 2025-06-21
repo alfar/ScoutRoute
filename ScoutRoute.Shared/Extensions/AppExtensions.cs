@@ -8,7 +8,7 @@ namespace ScoutRoute.Shared.Extensions
 {
     public static class AppExtensions
     {
-        public static IHost UseScoutRouteDefaults(this IHost app)
+        public static IHost UseScoutRoutesDefaults(this IHost app)
         {
             BsonSerializer.RegisterSerializer(new GuidSerializer(GuidRepresentation.Standard));
             BsonSerializer.RegisterSerializer(new MoneyBsonSerializer());

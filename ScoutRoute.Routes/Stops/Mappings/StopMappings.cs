@@ -10,6 +10,19 @@ namespace ScoutRoute.Routes.Stops.Mappings
             return stops.Select(s => s.ToDto());
         }
 
-        public static StopDto ToDto(this Stop stop) => new StopDto() { Id = stop.Id.Value, ContactPerson = stop.ContactPerson, Title = stop.Title, Quantity = stop.Quantity, Coordinates = [stop.Latitude, stop.Longitude], Comment = stop.Comment, RouteId = stop.RouteId?.Value, Status = (int)stop.Status };
+        public static StopDto ToDto(this Stop stop)
+        {
+            return new StopDto()
+            {
+                Id = stop.Id.Value,
+                ContactPerson = stop.ContactPerson,
+                Title = stop.Title,
+                Quantity = stop.Quantity,
+                Coordinates = [stop.Latitude, stop.Longitude],
+                Comment = stop.Comment,
+                RouteId = stop.RouteId?.Value,
+                Status = (int)stop.Status,
+            };
+        }
     }
 }

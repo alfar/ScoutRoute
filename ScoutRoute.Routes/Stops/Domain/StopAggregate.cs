@@ -23,8 +23,9 @@ namespace ScoutRoute.Routes.Stops.Domain
 
         private decimal Latitude { get; set; }
         private decimal Longitude { get; set; }
-
         private string Comment { get; set; } = "";
+
+        private int Status { get; set; } = 0; // Active
         private RouteId? RouteId { get; set; }
 
         private bool Deleted { get; set; }
@@ -63,6 +64,22 @@ namespace ScoutRoute.Routes.Stops.Domain
             }
         }
 
+        public void Apply(StopCompletedEvent @event)
+        {
+            if (@event.StopId == StopId)
+            {
+                Status = 1;
+            }
+        }
+
+        public void Apply(StopNotFoundEvent @event)
+        {
+            if (@event.StopId == StopId)
+            {
+                Status = 2;
+            }
+        }
+
         public void Apply(RouteStopRemovedEvent @event)
         {
             if (@event.StopId == StopId)
@@ -94,6 +111,18 @@ namespace ScoutRoute.Routes.Stops.Domain
                 comment,
                 userId
             );
+        }
+
+        public StopCompletedEvent MarkCompleted()
+        {
+            EnsureNotDeleted();
+            return new StopCompletedEvent(ProjectId, StopId);
+        }
+
+        public StopNotFoundEvent MarkNotFound()
+        {
+            EnsureNotDeleted();
+            return new StopNotFoundEvent(ProjectId, StopId);
         }
 
         public StopDeletedEvent Delete()

@@ -41,8 +41,8 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(builder =>
     builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
 }));
 
-builder.Services.AddPaymentServices();
-builder.Services.AddRouteServices();
+builder.Services.AddPaymentsServices();
+builder.Services.AddRoutesServices();
 
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
@@ -67,7 +67,7 @@ app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.UseScoutRouteDefaults();
+app.UseScoutRoutesDefaults();
 
 // Configure the HTTP request pipeline.
 app.UseExceptionHandler();
@@ -80,7 +80,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapPaymentEndpoints();
-app.MapRouteEndpoints();
+app.MapRoutesEndpoints();
 
 app.MapDefaultEndpoints();
 

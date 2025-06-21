@@ -13,6 +13,9 @@ public class RouteAggregate
     private StopId[] Stops { get; set; } = [];
 
     private TeamId? AssignedTeamId { get; set; }
+
+    private int Status { get; set; }
+
     private bool Deleted { get; set; }
 
     private void EnsureNotDeleted()
@@ -41,6 +44,11 @@ public class RouteAggregate
     public RouteUnassignedEvent UnassignTeam()
     {
         EnsureNotDeleted();
+        if (AssignedTeamId == null)
+        {
+            throw new InvalidOperationException($"Route {RouteId} is not assigned to any team.");
+        }
+
         return new(ProjectId, RouteId);
     }
 
@@ -143,6 +151,16 @@ public class RouteAggregate
         }
 
         Stops = [.. Stops, @event.StopId];
+    }
+
+    public void Apply(RouteCompletedEvent @event)
+    {
+        Status = 1;
+    }
+
+    public void Apply(RouteOverfilledEvent @event)
+    {
+        Status = 2;
     }
 
     public void Apply(RouteDeletedEvent @event)

@@ -6,14 +6,14 @@ using ScoutRoute.Routes.Stops.Domain;
 
 namespace ScoutRoute.Routes.Stops.Endpoints
 {
-    internal static class CompleteStopEndpoint
+    internal static class NotFoundStopEndpoint
     {
-        public const string Name = "CompleteStop";
+        public const string Name = "NotFoundStop";
 
-        public static IEndpointRouteBuilder MapCompleteStop(this IEndpointRouteBuilder app)
+        public static IEndpointRouteBuilder MapNotFoundStop(this IEndpointRouteBuilder app)
         {
             app.MapPut(
-                    Contracts.Endpoints.Endpoints.Stops.CompleteStop,
+                    Contracts.Endpoints.Endpoints.Stops.NotFoundStop,
                     async (
                         Guid projectId,
                         Guid stopId,
@@ -31,7 +31,7 @@ namespace ScoutRoute.Routes.Stops.Endpoints
                             return Results.NotFound();
                         }
 
-                        var @event = stop.MarkCompleted();
+                        var @event = stop.MarkNotFound();
                         session.Events.Append(stopId, @event);
                         await session.SaveChangesAsync(cancellationToken);
 
