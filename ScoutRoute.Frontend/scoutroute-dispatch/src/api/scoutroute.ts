@@ -29,6 +29,7 @@ import type {
   AddTeamMemberCommand,
   AssignAddressCommand,
   AssignTeamCommand,
+  ChangeExtraStopsCommand,
   CreateProjectCommand,
   CreateRouteCommand,
   CreateStopCommand,
@@ -642,87 +643,6 @@ export function useGetAllProjects<
   return query;
 }
 
-export const updateProject = (
-  projectId: string,
-  updateProjectCommand: UpdateProjectCommand,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.default.put(
-    `https://localhost:7520/projects/${projectId}`,
-    updateProjectCommand,
-    options,
-  );
-};
-
-export const getUpdateProjectMutationOptions = <
-  TError = AxiosError<ProblemDetails>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateProject>>,
-    TError,
-    { projectId: string; data: UpdateProjectCommand },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateProject>>,
-  TError,
-  { projectId: string; data: UpdateProjectCommand },
-  TContext
-> => {
-  const mutationKey = ["updateProject"];
-  const { mutation: mutationOptions, axios: axiosOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, axios: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateProject>>,
-    { projectId: string; data: UpdateProjectCommand }
-  > = (props) => {
-    const { projectId, data } = props ?? {};
-
-    return updateProject(projectId, data, axiosOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type UpdateProjectMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateProject>>
->;
-export type UpdateProjectMutationBody = UpdateProjectCommand;
-export type UpdateProjectMutationError = AxiosError<ProblemDetails>;
-
-export const useUpdateProject = <
-  TError = AxiosError<ProblemDetails>,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateProject>>,
-      TError,
-      { projectId: string; data: UpdateProjectCommand },
-      TContext
-    >;
-    axios?: AxiosRequestConfig;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof updateProject>>,
-  TError,
-  { projectId: string; data: UpdateProjectCommand },
-  TContext
-> => {
-  const mutationOptions = getUpdateProjectMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
 export const deleteProject = (
   projectId: string,
   options?: AxiosRequestConfig,
@@ -941,6 +861,486 @@ export function useGetProject<
 
   return query;
 }
+
+export const updateProject = (
+  projectId: string,
+  updateProjectCommand: UpdateProjectCommand,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.put(
+    `https://localhost:7520/projects/${projectId}`,
+    updateProjectCommand,
+    options,
+  );
+};
+
+export const getUpdateProjectMutationOptions = <
+  TError = AxiosError<ProblemDetails>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateProject>>,
+    TError,
+    { projectId: string; data: UpdateProjectCommand },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateProject>>,
+  TError,
+  { projectId: string; data: UpdateProjectCommand },
+  TContext
+> => {
+  const mutationKey = ["updateProject"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateProject>>,
+    { projectId: string; data: UpdateProjectCommand }
+  > = (props) => {
+    const { projectId, data } = props ?? {};
+
+    return updateProject(projectId, data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateProjectMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateProject>>
+>;
+export type UpdateProjectMutationBody = UpdateProjectCommand;
+export type UpdateProjectMutationError = AxiosError<ProblemDetails>;
+
+export const useUpdateProject = <
+  TError = AxiosError<ProblemDetails>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof updateProject>>,
+      TError,
+      { projectId: string; data: UpdateProjectCommand },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof updateProject>>,
+  TError,
+  { projectId: string; data: UpdateProjectCommand },
+  TContext
+> => {
+  const mutationOptions = getUpdateProjectMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const addComment = (
+  projectId: string,
+  routeId: string,
+  addCommentCommand: AddCommentCommand,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.post(
+    `https://localhost:7520/projects/${projectId}/routes/${routeId}/comments`,
+    addCommentCommand,
+    options,
+  );
+};
+
+export const getAddCommentMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addComment>>,
+    TError,
+    { projectId: string; routeId: string; data: AddCommentCommand },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof addComment>>,
+  TError,
+  { projectId: string; routeId: string; data: AddCommentCommand },
+  TContext
+> => {
+  const mutationKey = ["addComment"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof addComment>>,
+    { projectId: string; routeId: string; data: AddCommentCommand }
+  > = (props) => {
+    const { projectId, routeId, data } = props ?? {};
+
+    return addComment(projectId, routeId, data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AddCommentMutationResult = NonNullable<
+  Awaited<ReturnType<typeof addComment>>
+>;
+export type AddCommentMutationBody = AddCommentCommand;
+export type AddCommentMutationError = AxiosError<unknown>;
+
+export const useAddComment = <TError = AxiosError<unknown>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof addComment>>,
+      TError,
+      { projectId: string; routeId: string; data: AddCommentCommand },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof addComment>>,
+  TError,
+  { projectId: string; routeId: string; data: AddCommentCommand },
+  TContext
+> => {
+  const mutationOptions = getAddCommentMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const addStop = (
+  projectId: string,
+  routeId: string,
+  addStopCommand: AddStopCommand,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.post(
+    `https://localhost:7520/projects/${projectId}/routes/${routeId}/stops`,
+    addStopCommand,
+    options,
+  );
+};
+
+export const getAddStopMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addStop>>,
+    TError,
+    { projectId: string; routeId: string; data: AddStopCommand },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof addStop>>,
+  TError,
+  { projectId: string; routeId: string; data: AddStopCommand },
+  TContext
+> => {
+  const mutationKey = ["addStop"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof addStop>>,
+    { projectId: string; routeId: string; data: AddStopCommand }
+  > = (props) => {
+    const { projectId, routeId, data } = props ?? {};
+
+    return addStop(projectId, routeId, data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AddStopMutationResult = NonNullable<
+  Awaited<ReturnType<typeof addStop>>
+>;
+export type AddStopMutationBody = AddStopCommand;
+export type AddStopMutationError = AxiosError<unknown>;
+
+export const useAddStop = <TError = AxiosError<unknown>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof addStop>>,
+      TError,
+      { projectId: string; routeId: string; data: AddStopCommand },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof addStop>>,
+  TError,
+  { projectId: string; routeId: string; data: AddStopCommand },
+  TContext
+> => {
+  const mutationOptions = getAddStopMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const assignTeam = (
+  projectId: string,
+  routeId: string,
+  assignTeamCommand: AssignTeamCommand,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.put(
+    `https://localhost:7520/projects/${projectId}/routes/${routeId}/team`,
+    assignTeamCommand,
+    options,
+  );
+};
+
+export const getAssignTeamMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof assignTeam>>,
+    TError,
+    { projectId: string; routeId: string; data: AssignTeamCommand },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof assignTeam>>,
+  TError,
+  { projectId: string; routeId: string; data: AssignTeamCommand },
+  TContext
+> => {
+  const mutationKey = ["assignTeam"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof assignTeam>>,
+    { projectId: string; routeId: string; data: AssignTeamCommand }
+  > = (props) => {
+    const { projectId, routeId, data } = props ?? {};
+
+    return assignTeam(projectId, routeId, data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AssignTeamMutationResult = NonNullable<
+  Awaited<ReturnType<typeof assignTeam>>
+>;
+export type AssignTeamMutationBody = AssignTeamCommand;
+export type AssignTeamMutationError = AxiosError<unknown>;
+
+export const useAssignTeam = <TError = AxiosError<unknown>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof assignTeam>>,
+      TError,
+      { projectId: string; routeId: string; data: AssignTeamCommand },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof assignTeam>>,
+  TError,
+  { projectId: string; routeId: string; data: AssignTeamCommand },
+  TContext
+> => {
+  const mutationOptions = getAssignTeamMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const unassignTeam = (
+  projectId: string,
+  routeId: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.delete(
+    `https://localhost:7520/projects/${projectId}/routes/${routeId}/team`,
+    options,
+  );
+};
+
+export const getUnassignTeamMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof unassignTeam>>,
+    TError,
+    { projectId: string; routeId: string },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof unassignTeam>>,
+  TError,
+  { projectId: string; routeId: string },
+  TContext
+> => {
+  const mutationKey = ["unassignTeam"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof unassignTeam>>,
+    { projectId: string; routeId: string }
+  > = (props) => {
+    const { projectId, routeId } = props ?? {};
+
+    return unassignTeam(projectId, routeId, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UnassignTeamMutationResult = NonNullable<
+  Awaited<ReturnType<typeof unassignTeam>>
+>;
+
+export type UnassignTeamMutationError = AxiosError<unknown>;
+
+export const useUnassignTeam = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof unassignTeam>>,
+      TError,
+      { projectId: string; routeId: string },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof unassignTeam>>,
+  TError,
+  { projectId: string; routeId: string },
+  TContext
+> => {
+  const mutationOptions = getUnassignTeamMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const changeExtraStops = (
+  projectId: string,
+  routeId: string,
+  changeExtraStopsCommand: ChangeExtraStopsCommand,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.put(
+    `https://localhost:7520/projects/${projectId}/routes/${routeId}/extra-stops`,
+    changeExtraStopsCommand,
+    options,
+  );
+};
+
+export const getChangeExtraStopsMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof changeExtraStops>>,
+    TError,
+    { projectId: string; routeId: string; data: ChangeExtraStopsCommand },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof changeExtraStops>>,
+  TError,
+  { projectId: string; routeId: string; data: ChangeExtraStopsCommand },
+  TContext
+> => {
+  const mutationKey = ["changeExtraStops"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof changeExtraStops>>,
+    { projectId: string; routeId: string; data: ChangeExtraStopsCommand }
+  > = (props) => {
+    const { projectId, routeId, data } = props ?? {};
+
+    return changeExtraStops(projectId, routeId, data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ChangeExtraStopsMutationResult = NonNullable<
+  Awaited<ReturnType<typeof changeExtraStops>>
+>;
+export type ChangeExtraStopsMutationBody = ChangeExtraStopsCommand;
+export type ChangeExtraStopsMutationError = AxiosError<unknown>;
+
+export const useChangeExtraStops = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof changeExtraStops>>,
+      TError,
+      { projectId: string; routeId: string; data: ChangeExtraStopsCommand },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof changeExtraStops>>,
+  TError,
+  { projectId: string; routeId: string; data: ChangeExtraStopsCommand },
+  TContext
+> => {
+  const mutationOptions = getChangeExtraStopsMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
 
 export const createRoute = (
   projectId: string,
@@ -1162,88 +1562,6 @@ export function useGetAllRoutes<
 
   return query;
 }
-
-export const updateRoute = (
-  projectId: string,
-  routeId: string,
-  updateRouteCommand: UpdateRouteCommand,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.default.put(
-    `https://localhost:7520/projects/${projectId}/routes/${routeId}`,
-    updateRouteCommand,
-    options,
-  );
-};
-
-export const getUpdateRouteMutationOptions = <
-  TError = AxiosError<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateRoute>>,
-    TError,
-    { projectId: string; routeId: string; data: UpdateRouteCommand },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof updateRoute>>,
-  TError,
-  { projectId: string; routeId: string; data: UpdateRouteCommand },
-  TContext
-> => {
-  const mutationKey = ["updateRoute"];
-  const { mutation: mutationOptions, axios: axiosOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, axios: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateRoute>>,
-    { projectId: string; routeId: string; data: UpdateRouteCommand }
-  > = (props) => {
-    const { projectId, routeId, data } = props ?? {};
-
-    return updateRoute(projectId, routeId, data, axiosOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type UpdateRouteMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateRoute>>
->;
-export type UpdateRouteMutationBody = UpdateRouteCommand;
-export type UpdateRouteMutationError = AxiosError<unknown>;
-
-export const useUpdateRoute = <
-  TError = AxiosError<unknown>,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateRoute>>,
-      TError,
-      { projectId: string; routeId: string; data: UpdateRouteCommand },
-      TContext
-    >;
-    axios?: AxiosRequestConfig;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof updateRoute>>,
-  TError,
-  { projectId: string; routeId: string; data: UpdateRouteCommand },
-  TContext
-> => {
-  const mutationOptions = getUpdateRouteMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
 
 export const deleteRoute = (
   projectId: string,
@@ -1472,194 +1790,37 @@ export function useGetRoute<
   return query;
 }
 
-export const addStop = (
+export const updateRoute = (
   projectId: string,
   routeId: string,
-  addStopCommand: AddStopCommand,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.default.post(
-    `https://localhost:7520/projects/${projectId}/routes/${routeId}/stops`,
-    addStopCommand,
-    options,
-  );
-};
-
-export const getAddStopMutationOptions = <
-  TError = AxiosError<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof addStop>>,
-    TError,
-    { projectId: string; routeId: string; data: AddStopCommand },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof addStop>>,
-  TError,
-  { projectId: string; routeId: string; data: AddStopCommand },
-  TContext
-> => {
-  const mutationKey = ["addStop"];
-  const { mutation: mutationOptions, axios: axiosOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, axios: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof addStop>>,
-    { projectId: string; routeId: string; data: AddStopCommand }
-  > = (props) => {
-    const { projectId, routeId, data } = props ?? {};
-
-    return addStop(projectId, routeId, data, axiosOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type AddStopMutationResult = NonNullable<
-  Awaited<ReturnType<typeof addStop>>
->;
-export type AddStopMutationBody = AddStopCommand;
-export type AddStopMutationError = AxiosError<unknown>;
-
-export const useAddStop = <TError = AxiosError<unknown>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof addStop>>,
-      TError,
-      { projectId: string; routeId: string; data: AddStopCommand },
-      TContext
-    >;
-    axios?: AxiosRequestConfig;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof addStop>>,
-  TError,
-  { projectId: string; routeId: string; data: AddStopCommand },
-  TContext
-> => {
-  const mutationOptions = getAddStopMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-export const removeStop = (
-  projectId: string,
-  routeId: string,
-  stopId: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.default.delete(
-    `https://localhost:7520/projects/${projectId}/routes/${routeId}/stops/${stopId}`,
-    options,
-  );
-};
-
-export const getRemoveStopMutationOptions = <
-  TError = AxiosError<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof removeStop>>,
-    TError,
-    { projectId: string; routeId: string; stopId: string },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof removeStop>>,
-  TError,
-  { projectId: string; routeId: string; stopId: string },
-  TContext
-> => {
-  const mutationKey = ["removeStop"];
-  const { mutation: mutationOptions, axios: axiosOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, axios: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof removeStop>>,
-    { projectId: string; routeId: string; stopId: string }
-  > = (props) => {
-    const { projectId, routeId, stopId } = props ?? {};
-
-    return removeStop(projectId, routeId, stopId, axiosOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type RemoveStopMutationResult = NonNullable<
-  Awaited<ReturnType<typeof removeStop>>
->;
-
-export type RemoveStopMutationError = AxiosError<unknown>;
-
-export const useRemoveStop = <TError = AxiosError<unknown>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof removeStop>>,
-      TError,
-      { projectId: string; routeId: string; stopId: string },
-      TContext
-    >;
-    axios?: AxiosRequestConfig;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof removeStop>>,
-  TError,
-  { projectId: string; routeId: string; stopId: string },
-  TContext
-> => {
-  const mutationOptions = getRemoveStopMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-export const assignTeam = (
-  projectId: string,
-  routeId: string,
-  assignTeamCommand: AssignTeamCommand,
+  updateRouteCommand: UpdateRouteCommand,
   options?: AxiosRequestConfig,
 ): Promise<AxiosResponse<void>> => {
   return axios.default.put(
-    `https://localhost:7520/projects/${projectId}/routes/${routeId}/team`,
-    assignTeamCommand,
+    `https://localhost:7520/projects/${projectId}/routes/${routeId}`,
+    updateRouteCommand,
     options,
   );
 };
 
-export const getAssignTeamMutationOptions = <
+export const getUpdateRouteMutationOptions = <
   TError = AxiosError<unknown>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof assignTeam>>,
+    Awaited<ReturnType<typeof updateRoute>>,
     TError,
-    { projectId: string; routeId: string; data: AssignTeamCommand },
+    { projectId: string; routeId: string; data: UpdateRouteCommand },
     TContext
   >;
   axios?: AxiosRequestConfig;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof assignTeam>>,
+  Awaited<ReturnType<typeof updateRoute>>,
   TError,
-  { projectId: string; routeId: string; data: AssignTeamCommand },
+  { projectId: string; routeId: string; data: UpdateRouteCommand },
   TContext
 > => {
-  const mutationKey = ["assignTeam"];
+  const mutationKey = ["updateRoute"];
   const { mutation: mutationOptions, axios: axiosOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -1669,121 +1830,44 @@ export const getAssignTeamMutationOptions = <
     : { mutation: { mutationKey }, axios: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof assignTeam>>,
-    { projectId: string; routeId: string; data: AssignTeamCommand }
+    Awaited<ReturnType<typeof updateRoute>>,
+    { projectId: string; routeId: string; data: UpdateRouteCommand }
   > = (props) => {
     const { projectId, routeId, data } = props ?? {};
 
-    return assignTeam(projectId, routeId, data, axiosOptions);
+    return updateRoute(projectId, routeId, data, axiosOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type AssignTeamMutationResult = NonNullable<
-  Awaited<ReturnType<typeof assignTeam>>
+export type UpdateRouteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateRoute>>
 >;
-export type AssignTeamMutationBody = AssignTeamCommand;
-export type AssignTeamMutationError = AxiosError<unknown>;
+export type UpdateRouteMutationBody = UpdateRouteCommand;
+export type UpdateRouteMutationError = AxiosError<unknown>;
 
-export const useAssignTeam = <TError = AxiosError<unknown>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof assignTeam>>,
-      TError,
-      { projectId: string; routeId: string; data: AssignTeamCommand },
-      TContext
-    >;
-    axios?: AxiosRequestConfig;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof assignTeam>>,
-  TError,
-  { projectId: string; routeId: string; data: AssignTeamCommand },
-  TContext
-> => {
-  const mutationOptions = getAssignTeamMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-export const unassignTeam = (
-  projectId: string,
-  routeId: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.default.delete(
-    `https://localhost:7520/projects/${projectId}/routes/${routeId}/team`,
-    options,
-  );
-};
-
-export const getUnassignTeamMutationOptions = <
-  TError = AxiosError<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof unassignTeam>>,
-    TError,
-    { projectId: string; routeId: string },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof unassignTeam>>,
-  TError,
-  { projectId: string; routeId: string },
-  TContext
-> => {
-  const mutationKey = ["unassignTeam"];
-  const { mutation: mutationOptions, axios: axiosOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, axios: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof unassignTeam>>,
-    { projectId: string; routeId: string }
-  > = (props) => {
-    const { projectId, routeId } = props ?? {};
-
-    return unassignTeam(projectId, routeId, axiosOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type UnassignTeamMutationResult = NonNullable<
-  Awaited<ReturnType<typeof unassignTeam>>
->;
-
-export type UnassignTeamMutationError = AxiosError<unknown>;
-
-export const useUnassignTeam = <
+export const useUpdateRoute = <
   TError = AxiosError<unknown>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof unassignTeam>>,
+      Awaited<ReturnType<typeof updateRoute>>,
       TError,
-      { projectId: string; routeId: string },
+      { projectId: string; routeId: string; data: UpdateRouteCommand },
       TContext
     >;
     axios?: AxiosRequestConfig;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof unassignTeam>>,
+  Awaited<ReturnType<typeof updateRoute>>,
   TError,
-  { projectId: string; routeId: string },
+  { projectId: string; routeId: string; data: UpdateRouteCommand },
   TContext
 > => {
-  const mutationOptions = getUnassignTeamMutationOptions(options);
+  const mutationOptions = getUpdateRouteMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -1964,6 +2048,327 @@ export function useGetRoutesForTeam<
 
   return query;
 }
+
+export const markComplete = (
+  projectId: string,
+  routeId: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.put(
+    `https://localhost:7520/projects/${projectId}/routes/${routeId}/complete`,
+    undefined,
+    options,
+  );
+};
+
+export const getMarkCompleteMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof markComplete>>,
+    TError,
+    { projectId: string; routeId: string },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof markComplete>>,
+  TError,
+  { projectId: string; routeId: string },
+  TContext
+> => {
+  const mutationKey = ["markComplete"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof markComplete>>,
+    { projectId: string; routeId: string }
+  > = (props) => {
+    const { projectId, routeId } = props ?? {};
+
+    return markComplete(projectId, routeId, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type MarkCompleteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof markComplete>>
+>;
+
+export type MarkCompleteMutationError = AxiosError<unknown>;
+
+export const useMarkComplete = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof markComplete>>,
+      TError,
+      { projectId: string; routeId: string },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof markComplete>>,
+  TError,
+  { projectId: string; routeId: string },
+  TContext
+> => {
+  const mutationOptions = getMarkCompleteMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const markOverfilled = (
+  projectId: string,
+  routeId: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.put(
+    `https://localhost:7520/projects/${projectId}/routes/${routeId}/overfilled`,
+    undefined,
+    options,
+  );
+};
+
+export const getMarkOverfilledMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof markOverfilled>>,
+    TError,
+    { projectId: string; routeId: string },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof markOverfilled>>,
+  TError,
+  { projectId: string; routeId: string },
+  TContext
+> => {
+  const mutationKey = ["markOverfilled"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof markOverfilled>>,
+    { projectId: string; routeId: string }
+  > = (props) => {
+    const { projectId, routeId } = props ?? {};
+
+    return markOverfilled(projectId, routeId, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type MarkOverfilledMutationResult = NonNullable<
+  Awaited<ReturnType<typeof markOverfilled>>
+>;
+
+export type MarkOverfilledMutationError = AxiosError<unknown>;
+
+export const useMarkOverfilled = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof markOverfilled>>,
+      TError,
+      { projectId: string; routeId: string },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof markOverfilled>>,
+  TError,
+  { projectId: string; routeId: string },
+  TContext
+> => {
+  const mutationOptions = getMarkOverfilledMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const removeStop = (
+  projectId: string,
+  routeId: string,
+  stopId: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.delete(
+    `https://localhost:7520/projects/${projectId}/routes/${routeId}/stops/${stopId}`,
+    options,
+  );
+};
+
+export const getRemoveStopMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof removeStop>>,
+    TError,
+    { projectId: string; routeId: string; stopId: string },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof removeStop>>,
+  TError,
+  { projectId: string; routeId: string; stopId: string },
+  TContext
+> => {
+  const mutationKey = ["removeStop"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof removeStop>>,
+    { projectId: string; routeId: string; stopId: string }
+  > = (props) => {
+    const { projectId, routeId, stopId } = props ?? {};
+
+    return removeStop(projectId, routeId, stopId, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type RemoveStopMutationResult = NonNullable<
+  Awaited<ReturnType<typeof removeStop>>
+>;
+
+export type RemoveStopMutationError = AxiosError<unknown>;
+
+export const useRemoveStop = <TError = AxiosError<unknown>, TContext = unknown>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof removeStop>>,
+      TError,
+      { projectId: string; routeId: string; stopId: string },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof removeStop>>,
+  TError,
+  { projectId: string; routeId: string; stopId: string },
+  TContext
+> => {
+  const mutationOptions = getRemoveStopMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const completeStop = (
+  projectId: string,
+  stopId: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.put(
+    `https://localhost:7520/projects/${projectId}/stops/${stopId}/completed`,
+    undefined,
+    options,
+  );
+};
+
+export const getCompleteStopMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof completeStop>>,
+    TError,
+    { projectId: string; stopId: string },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof completeStop>>,
+  TError,
+  { projectId: string; stopId: string },
+  TContext
+> => {
+  const mutationKey = ["completeStop"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof completeStop>>,
+    { projectId: string; stopId: string }
+  > = (props) => {
+    const { projectId, stopId } = props ?? {};
+
+    return completeStop(projectId, stopId, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CompleteStopMutationResult = NonNullable<
+  Awaited<ReturnType<typeof completeStop>>
+>;
+
+export type CompleteStopMutationError = AxiosError<unknown>;
+
+export const useCompleteStop = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof completeStop>>,
+      TError,
+      { projectId: string; stopId: string },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof completeStop>>,
+  TError,
+  { projectId: string; stopId: string },
+  TContext
+> => {
+  const mutationOptions = getCompleteStopMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
 
 export const createStop = (
   projectId: string,
@@ -2183,87 +2588,6 @@ export function useGetAllStops<
   return query;
 }
 
-export const completeStop = (
-  projectId: string,
-  stopId: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.default.put(
-    `https://localhost:7520/projects/${projectId}/stops/${stopId}/completed`,
-    undefined,
-    options,
-  );
-};
-
-export const getCompleteStopMutationOptions = <
-  TError = AxiosError<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof completeStop>>,
-    TError,
-    { projectId: string; stopId: string },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof completeStop>>,
-  TError,
-  { projectId: string; stopId: string },
-  TContext
-> => {
-  const mutationKey = ["completeStop"];
-  const { mutation: mutationOptions, axios: axiosOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, axios: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof completeStop>>,
-    { projectId: string; stopId: string }
-  > = (props) => {
-    const { projectId, stopId } = props ?? {};
-
-    return completeStop(projectId, stopId, axiosOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type CompleteStopMutationResult = NonNullable<
-  Awaited<ReturnType<typeof completeStop>>
->;
-
-export type CompleteStopMutationError = AxiosError<unknown>;
-
-export const useCompleteStop = <
-  TError = AxiosError<unknown>,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof completeStop>>,
-      TError,
-      { projectId: string; stopId: string },
-      TContext
-    >;
-    axios?: AxiosRequestConfig;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof completeStop>>,
-  TError,
-  { projectId: string; stopId: string },
-  TContext
-> => {
-  const mutationOptions = getCompleteStopMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
 export const deleteStop = (
   projectId: string,
   stopId: string,
@@ -2337,85 +2661,6 @@ export const useDeleteStop = <TError = AxiosError<unknown>, TContext = unknown>(
   TContext
 > => {
   const mutationOptions = getDeleteStopMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-export const addComment = (
-  projectId: string,
-  stopId: string,
-  addCommentCommand: AddCommentCommand,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.default.post(
-    `https://localhost:7520/projects/${projectId}/stops/${stopId}/comments`,
-    addCommentCommand,
-    options,
-  );
-};
-
-export const getAddCommentMutationOptions = <
-  TError = AxiosError<unknown>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof addComment>>,
-    TError,
-    { projectId: string; stopId: string; data: AddCommentCommand },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof addComment>>,
-  TError,
-  { projectId: string; stopId: string; data: AddCommentCommand },
-  TContext
-> => {
-  const mutationKey = ["addComment"];
-  const { mutation: mutationOptions, axios: axiosOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, axios: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof addComment>>,
-    { projectId: string; stopId: string; data: AddCommentCommand }
-  > = (props) => {
-    const { projectId, stopId, data } = props ?? {};
-
-    return addComment(projectId, stopId, data, axiosOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type AddCommentMutationResult = NonNullable<
-  Awaited<ReturnType<typeof addComment>>
->;
-export type AddCommentMutationBody = AddCommentCommand;
-export type AddCommentMutationError = AxiosError<unknown>;
-
-export const useAddComment = <TError = AxiosError<unknown>, TContext = unknown>(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof addComment>>,
-      TError,
-      { projectId: string; stopId: string; data: AddCommentCommand },
-      TContext
-    >;
-    axios?: AxiosRequestConfig;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof addComment>>,
-  TError,
-  { projectId: string; stopId: string; data: AddCommentCommand },
-  TContext
-> => {
-  const mutationOptions = getAddCommentMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -2583,6 +2828,169 @@ export function useGetUnassignedStops<
 
   return query;
 }
+
+export const notFoundStop = (
+  projectId: string,
+  stopId: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.put(
+    `https://localhost:7520/projects/${projectId}/stops/${stopId}/notfound`,
+    undefined,
+    options,
+  );
+};
+
+export const getNotFoundStopMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof notFoundStop>>,
+    TError,
+    { projectId: string; stopId: string },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof notFoundStop>>,
+  TError,
+  { projectId: string; stopId: string },
+  TContext
+> => {
+  const mutationKey = ["notFoundStop"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof notFoundStop>>,
+    { projectId: string; stopId: string }
+  > = (props) => {
+    const { projectId, stopId } = props ?? {};
+
+    return notFoundStop(projectId, stopId, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type NotFoundStopMutationResult = NonNullable<
+  Awaited<ReturnType<typeof notFoundStop>>
+>;
+
+export type NotFoundStopMutationError = AxiosError<unknown>;
+
+export const useNotFoundStop = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof notFoundStop>>,
+      TError,
+      { projectId: string; stopId: string },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof notFoundStop>>,
+  TError,
+  { projectId: string; stopId: string },
+  TContext
+> => {
+  const mutationOptions = getNotFoundStopMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const addTeamMember = (
+  projectId: string,
+  teamId: string,
+  addTeamMemberCommand: AddTeamMemberCommand,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.put(
+    `https://localhost:7520/projects/${projectId}/teams/${teamId}/members`,
+    addTeamMemberCommand,
+    options,
+  );
+};
+
+export const getAddTeamMemberMutationOptions = <
+  TError = AxiosError<ProblemDetails>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof addTeamMember>>,
+    TError,
+    { projectId: string; teamId: string; data: AddTeamMemberCommand },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof addTeamMember>>,
+  TError,
+  { projectId: string; teamId: string; data: AddTeamMemberCommand },
+  TContext
+> => {
+  const mutationKey = ["addTeamMember"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof addTeamMember>>,
+    { projectId: string; teamId: string; data: AddTeamMemberCommand }
+  > = (props) => {
+    const { projectId, teamId, data } = props ?? {};
+
+    return addTeamMember(projectId, teamId, data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type AddTeamMemberMutationResult = NonNullable<
+  Awaited<ReturnType<typeof addTeamMember>>
+>;
+export type AddTeamMemberMutationBody = AddTeamMemberCommand;
+export type AddTeamMemberMutationError = AxiosError<ProblemDetails>;
+
+export const useAddTeamMember = <
+  TError = AxiosError<ProblemDetails>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof addTeamMember>>,
+      TError,
+      { projectId: string; teamId: string; data: AddTeamMemberCommand },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof addTeamMember>>,
+  TError,
+  { projectId: string; teamId: string; data: AddTeamMemberCommand },
+  TContext
+> => {
+  const mutationOptions = getAddTeamMemberMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
 
 export const createTeam = (
   projectId: string,
@@ -2805,37 +3213,183 @@ export function useGetAllTeams<
   return query;
 }
 
-export const updateTeamName = (
+export const getTeam = (
   projectId: string,
   teamId: string,
-  updateTeamNameCommand: UpdateTeamNameCommand,
   options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.default.put(
-    `https://localhost:7520/projects/${projectId}/teams/${teamId}/name`,
-    updateTeamNameCommand,
+): Promise<AxiosResponse<TeamDto>> => {
+  return axios.default.get(
+    `https://localhost:7520/projects/${projectId}/teams/${teamId}`,
     options,
   );
 };
 
-export const getUpdateTeamNameMutationOptions = <
+export const getGetTeamQueryKey = (projectId: string, teamId: string) => {
+  return [
+    `https://localhost:7520/projects/${projectId}/teams/${teamId}`,
+  ] as const;
+};
+
+export const getGetTeamQueryOptions = <
+  TData = Awaited<ReturnType<typeof getTeam>>,
+  TError = AxiosError<unknown>,
+>(
+  projectId: string,
+  teamId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getTeam>>, TError, TData>
+    >;
+    axios?: AxiosRequestConfig;
+  },
+) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ?? getGetTeamQueryKey(projectId, teamId);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTeam>>> = ({
+    signal,
+  }) => getTeam(projectId, teamId, { signal, ...axiosOptions });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!(projectId && teamId),
+    ...queryOptions,
+  } as UseQueryOptions<Awaited<ReturnType<typeof getTeam>>, TError, TData> & {
+    queryKey: DataTag<QueryKey, TData, TError>;
+  };
+};
+
+export type GetTeamQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getTeam>>
+>;
+export type GetTeamQueryError = AxiosError<unknown>;
+
+export function useGetTeam<
+  TData = Awaited<ReturnType<typeof getTeam>>,
+  TError = AxiosError<unknown>,
+>(
+  projectId: string,
+  teamId: string,
+  options: {
+    query: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getTeam>>, TError, TData>
+    > &
+      Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTeam>>,
+          TError,
+          Awaited<ReturnType<typeof getTeam>>
+        >,
+        "initialData"
+      >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): DefinedUseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeam<
+  TData = Awaited<ReturnType<typeof getTeam>>,
+  TError = AxiosError<unknown>,
+>(
+  projectId: string,
+  teamId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getTeam>>, TError, TData>
+    > &
+      Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getTeam>>,
+          TError,
+          Awaited<ReturnType<typeof getTeam>>
+        >,
+        "initialData"
+      >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+export function useGetTeam<
+  TData = Awaited<ReturnType<typeof getTeam>>,
+  TError = AxiosError<unknown>,
+>(
+  projectId: string,
+  teamId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getTeam>>, TError, TData>
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+};
+
+export function useGetTeam<
+  TData = Awaited<ReturnType<typeof getTeam>>,
+  TError = AxiosError<unknown>,
+>(
+  projectId: string,
+  teamId: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<Awaited<ReturnType<typeof getTeam>>, TError, TData>
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseQueryResult<TData, TError> & {
+  queryKey: DataTag<QueryKey, TData, TError>;
+} {
+  const queryOptions = getGetTeamQueryOptions(projectId, teamId, options);
+
+  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+    TData,
+    TError
+  > & { queryKey: DataTag<QueryKey, TData, TError> };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+}
+
+export const removeTeamMember = (
+  projectId: string,
+  teamId: string,
+  name: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.delete(
+    `https://localhost:7520/projects/${projectId}/teams/${teamId}/members/${name}`,
+    options,
+  );
+};
+
+export const getRemoveTeamMemberMutationOptions = <
   TError = AxiosError<ProblemDetails>,
   TContext = unknown,
 >(options?: {
   mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof updateTeamName>>,
+    Awaited<ReturnType<typeof removeTeamMember>>,
     TError,
-    { projectId: string; teamId: string; data: UpdateTeamNameCommand },
+    { projectId: string; teamId: string; name: string },
     TContext
   >;
   axios?: AxiosRequestConfig;
 }): UseMutationOptions<
-  Awaited<ReturnType<typeof updateTeamName>>,
+  Awaited<ReturnType<typeof removeTeamMember>>,
   TError,
-  { projectId: string; teamId: string; data: UpdateTeamNameCommand },
+  { projectId: string; teamId: string; name: string },
   TContext
 > => {
-  const mutationKey = ["updateTeamName"];
+  const mutationKey = ["removeTeamMember"];
   const { mutation: mutationOptions, axios: axiosOptions } = options
     ? options.mutation &&
       "mutationKey" in options.mutation &&
@@ -2845,44 +3399,44 @@ export const getUpdateTeamNameMutationOptions = <
     : { mutation: { mutationKey }, axios: undefined };
 
   const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof updateTeamName>>,
-    { projectId: string; teamId: string; data: UpdateTeamNameCommand }
+    Awaited<ReturnType<typeof removeTeamMember>>,
+    { projectId: string; teamId: string; name: string }
   > = (props) => {
-    const { projectId, teamId, data } = props ?? {};
+    const { projectId, teamId, name } = props ?? {};
 
-    return updateTeamName(projectId, teamId, data, axiosOptions);
+    return removeTeamMember(projectId, teamId, name, axiosOptions);
   };
 
   return { mutationFn, ...mutationOptions };
 };
 
-export type UpdateTeamNameMutationResult = NonNullable<
-  Awaited<ReturnType<typeof updateTeamName>>
+export type RemoveTeamMemberMutationResult = NonNullable<
+  Awaited<ReturnType<typeof removeTeamMember>>
 >;
-export type UpdateTeamNameMutationBody = UpdateTeamNameCommand;
-export type UpdateTeamNameMutationError = AxiosError<ProblemDetails>;
 
-export const useUpdateTeamName = <
+export type RemoveTeamMemberMutationError = AxiosError<ProblemDetails>;
+
+export const useRemoveTeamMember = <
   TError = AxiosError<ProblemDetails>,
   TContext = unknown,
 >(
   options?: {
     mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof updateTeamName>>,
+      Awaited<ReturnType<typeof removeTeamMember>>,
       TError,
-      { projectId: string; teamId: string; data: UpdateTeamNameCommand },
+      { projectId: string; teamId: string; name: string },
       TContext
     >;
     axios?: AxiosRequestConfig;
   },
   queryClient?: QueryClient,
 ): UseMutationResult<
-  Awaited<ReturnType<typeof updateTeamName>>,
+  Awaited<ReturnType<typeof removeTeamMember>>,
   TError,
-  { projectId: string; teamId: string; data: UpdateTeamNameCommand },
+  { projectId: string; teamId: string; name: string },
   TContext
 > => {
-  const mutationOptions = getUpdateTeamNameMutationOptions(options);
+  const mutationOptions = getRemoveTeamMemberMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -2965,6 +3519,88 @@ export const useUpdateTeamLead = <
   TContext
 > => {
   const mutationOptions = getUpdateTeamLeadMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
+export const updateTeamName = (
+  projectId: string,
+  teamId: string,
+  updateTeamNameCommand: UpdateTeamNameCommand,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.put(
+    `https://localhost:7520/projects/${projectId}/teams/${teamId}/name`,
+    updateTeamNameCommand,
+    options,
+  );
+};
+
+export const getUpdateTeamNameMutationOptions = <
+  TError = AxiosError<ProblemDetails>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateTeamName>>,
+    TError,
+    { projectId: string; teamId: string; data: UpdateTeamNameCommand },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateTeamName>>,
+  TError,
+  { projectId: string; teamId: string; data: UpdateTeamNameCommand },
+  TContext
+> => {
+  const mutationKey = ["updateTeamName"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateTeamName>>,
+    { projectId: string; teamId: string; data: UpdateTeamNameCommand }
+  > = (props) => {
+    const { projectId, teamId, data } = props ?? {};
+
+    return updateTeamName(projectId, teamId, data, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type UpdateTeamNameMutationResult = NonNullable<
+  Awaited<ReturnType<typeof updateTeamName>>
+>;
+export type UpdateTeamNameMutationBody = UpdateTeamNameCommand;
+export type UpdateTeamNameMutationError = AxiosError<ProblemDetails>;
+
+export const useUpdateTeamName = <
+  TError = AxiosError<ProblemDetails>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof updateTeamName>>,
+      TError,
+      { projectId: string; teamId: string; data: UpdateTeamNameCommand },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof updateTeamName>>,
+  TError,
+  { projectId: string; teamId: string; data: UpdateTeamNameCommand },
+  TContext
+> => {
+  const mutationOptions = getUpdateTeamNameMutationOptions(options);
 
   return useMutation(mutationOptions, queryClient);
 };
@@ -3132,313 +3768,3 @@ export const useUpdateTeamTrailerType = <
 
   return useMutation(mutationOptions, queryClient);
 };
-
-export const addTeamMember = (
-  projectId: string,
-  teamId: string,
-  addTeamMemberCommand: AddTeamMemberCommand,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.default.put(
-    `https://localhost:7520/projects/${projectId}/teams/${teamId}/members`,
-    addTeamMemberCommand,
-    options,
-  );
-};
-
-export const getAddTeamMemberMutationOptions = <
-  TError = AxiosError<ProblemDetails>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof addTeamMember>>,
-    TError,
-    { projectId: string; teamId: string; data: AddTeamMemberCommand },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof addTeamMember>>,
-  TError,
-  { projectId: string; teamId: string; data: AddTeamMemberCommand },
-  TContext
-> => {
-  const mutationKey = ["addTeamMember"];
-  const { mutation: mutationOptions, axios: axiosOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, axios: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof addTeamMember>>,
-    { projectId: string; teamId: string; data: AddTeamMemberCommand }
-  > = (props) => {
-    const { projectId, teamId, data } = props ?? {};
-
-    return addTeamMember(projectId, teamId, data, axiosOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type AddTeamMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof addTeamMember>>
->;
-export type AddTeamMemberMutationBody = AddTeamMemberCommand;
-export type AddTeamMemberMutationError = AxiosError<ProblemDetails>;
-
-export const useAddTeamMember = <
-  TError = AxiosError<ProblemDetails>,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof addTeamMember>>,
-      TError,
-      { projectId: string; teamId: string; data: AddTeamMemberCommand },
-      TContext
-    >;
-    axios?: AxiosRequestConfig;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof addTeamMember>>,
-  TError,
-  { projectId: string; teamId: string; data: AddTeamMemberCommand },
-  TContext
-> => {
-  const mutationOptions = getAddTeamMemberMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-export const removeTeamMember = (
-  projectId: string,
-  teamId: string,
-  name: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<void>> => {
-  return axios.default.delete(
-    `https://localhost:7520/projects/${projectId}/teams/${teamId}/members/${name}`,
-    options,
-  );
-};
-
-export const getRemoveTeamMemberMutationOptions = <
-  TError = AxiosError<ProblemDetails>,
-  TContext = unknown,
->(options?: {
-  mutation?: UseMutationOptions<
-    Awaited<ReturnType<typeof removeTeamMember>>,
-    TError,
-    { projectId: string; teamId: string; name: string },
-    TContext
-  >;
-  axios?: AxiosRequestConfig;
-}): UseMutationOptions<
-  Awaited<ReturnType<typeof removeTeamMember>>,
-  TError,
-  { projectId: string; teamId: string; name: string },
-  TContext
-> => {
-  const mutationKey = ["removeTeamMember"];
-  const { mutation: mutationOptions, axios: axiosOptions } = options
-    ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-      ? options
-      : { ...options, mutation: { ...options.mutation, mutationKey } }
-    : { mutation: { mutationKey }, axios: undefined };
-
-  const mutationFn: MutationFunction<
-    Awaited<ReturnType<typeof removeTeamMember>>,
-    { projectId: string; teamId: string; name: string }
-  > = (props) => {
-    const { projectId, teamId, name } = props ?? {};
-
-    return removeTeamMember(projectId, teamId, name, axiosOptions);
-  };
-
-  return { mutationFn, ...mutationOptions };
-};
-
-export type RemoveTeamMemberMutationResult = NonNullable<
-  Awaited<ReturnType<typeof removeTeamMember>>
->;
-
-export type RemoveTeamMemberMutationError = AxiosError<ProblemDetails>;
-
-export const useRemoveTeamMember = <
-  TError = AxiosError<ProblemDetails>,
-  TContext = unknown,
->(
-  options?: {
-    mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof removeTeamMember>>,
-      TError,
-      { projectId: string; teamId: string; name: string },
-      TContext
-    >;
-    axios?: AxiosRequestConfig;
-  },
-  queryClient?: QueryClient,
-): UseMutationResult<
-  Awaited<ReturnType<typeof removeTeamMember>>,
-  TError,
-  { projectId: string; teamId: string; name: string },
-  TContext
-> => {
-  const mutationOptions = getRemoveTeamMemberMutationOptions(options);
-
-  return useMutation(mutationOptions, queryClient);
-};
-
-export const getTeam = (
-  projectId: string,
-  teamId: string,
-  options?: AxiosRequestConfig,
-): Promise<AxiosResponse<TeamDto>> => {
-  return axios.default.get(
-    `https://localhost:7520/projects/${projectId}/teams/${teamId}`,
-    options,
-  );
-};
-
-export const getGetTeamQueryKey = (projectId: string, teamId: string) => {
-  return [
-    `https://localhost:7520/projects/${projectId}/teams/${teamId}`,
-  ] as const;
-};
-
-export const getGetTeamQueryOptions = <
-  TData = Awaited<ReturnType<typeof getTeam>>,
-  TError = AxiosError<unknown>,
->(
-  projectId: string,
-  teamId: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getTeam>>, TError, TData>
-    >;
-    axios?: AxiosRequestConfig;
-  },
-) => {
-  const { query: queryOptions, axios: axiosOptions } = options ?? {};
-
-  const queryKey =
-    queryOptions?.queryKey ?? getGetTeamQueryKey(projectId, teamId);
-
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getTeam>>> = ({
-    signal,
-  }) => getTeam(projectId, teamId, { signal, ...axiosOptions });
-
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!(projectId && teamId),
-    ...queryOptions,
-  } as UseQueryOptions<Awaited<ReturnType<typeof getTeam>>, TError, TData> & {
-    queryKey: DataTag<QueryKey, TData, TError>;
-  };
-};
-
-export type GetTeamQueryResult = NonNullable<
-  Awaited<ReturnType<typeof getTeam>>
->;
-export type GetTeamQueryError = AxiosError<unknown>;
-
-export function useGetTeam<
-  TData = Awaited<ReturnType<typeof getTeam>>,
-  TError = AxiosError<unknown>,
->(
-  projectId: string,
-  teamId: string,
-  options: {
-    query: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getTeam>>, TError, TData>
-    > &
-      Pick<
-        DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getTeam>>,
-          TError,
-          Awaited<ReturnType<typeof getTeam>>
-        >,
-        "initialData"
-      >;
-    axios?: AxiosRequestConfig;
-  },
-  queryClient?: QueryClient,
-): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetTeam<
-  TData = Awaited<ReturnType<typeof getTeam>>,
-  TError = AxiosError<unknown>,
->(
-  projectId: string,
-  teamId: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getTeam>>, TError, TData>
-    > &
-      Pick<
-        UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getTeam>>,
-          TError,
-          Awaited<ReturnType<typeof getTeam>>
-        >,
-        "initialData"
-      >;
-    axios?: AxiosRequestConfig;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-export function useGetTeam<
-  TData = Awaited<ReturnType<typeof getTeam>>,
-  TError = AxiosError<unknown>,
->(
-  projectId: string,
-  teamId: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getTeam>>, TError, TData>
-    >;
-    axios?: AxiosRequestConfig;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-};
-
-export function useGetTeam<
-  TData = Awaited<ReturnType<typeof getTeam>>,
-  TError = AxiosError<unknown>,
->(
-  projectId: string,
-  teamId: string,
-  options?: {
-    query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getTeam>>, TError, TData>
-    >;
-    axios?: AxiosRequestConfig;
-  },
-  queryClient?: QueryClient,
-): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
-} {
-  const queryOptions = getGetTeamQueryOptions(projectId, teamId, options);
-
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-    TData,
-    TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
-
-  query.queryKey = queryOptions.queryKey;
-
-  return query;
-}

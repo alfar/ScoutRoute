@@ -55,6 +55,8 @@
             public const string GetForTeam = $"{Base}/team/{{teamId}}";
             public const string GetVacant = $"{Base}/vacant";
 
+            public const string ResetStatus = $"{Base}/{{routeId}}/reset";
+
             public const string MarkComplete = $"{Base}/{{routeId}}/complete";
             public const string MarkOverfilled = $"{Base}/{{routeId}}/overfilled";
             public const string ChangeExtraStops = $"{Base}/{{routeId}}/extra-stops";

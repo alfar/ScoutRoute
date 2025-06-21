@@ -106,6 +106,18 @@ namespace ScoutRoute.Routes.Routes.Projections
                 }
             );
 
+            ProjectAsync<RouteStatusResetEvent>(
+                async (e, ops) =>
+                {
+                    var route = await ops.LoadAsync<Route>(e.RouteId);
+
+                    if (route is not null)
+                    {
+                        ops.Store(route with { Status = RouteStatus.Active });
+                    }
+                }
+            );
+
             ProjectAsync<RouteExtraStopsChangedEvent>(
                 async (e, ops) =>
                 {

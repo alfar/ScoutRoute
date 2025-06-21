@@ -5,7 +5,7 @@ import { faCircleCheck, faCompass, faListAlt, faPaperPlane, faRotateLeft, faTria
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import RouteMap from "../RouteMap/RouteMap";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { addComment, addExtraStop, completeRoute, fetchRoute, overfilledRoute, removeExtraStop, resetRouteStatus } from "../../store/routeSlice";
+import { addRouteComment, completeRoute, fetchRoute, overfilledRoute, changeRouteExtraStops, resetRouteStatus } from "../../store/routeSlice";
 
 interface RouteViewProps {
     route: Route;
@@ -26,16 +26,16 @@ export default function RouteView(props: RouteViewProps) {
     }, [props.route.loaded, props.route.id, selectProject]);
 
     const addCommentAction = () => {
-        dispatch(addComment({ id: props.route.id, comment }));
+        dispatch(addRouteComment({ projectId: selectProject, routeId: props.route.id, comment }));
         setComment("");
     };
 
     const addExtraStopAction = () => {
-        dispatch(addExtraStop({ id: props.route.id }));
+        dispatch(changeRouteExtraStops({ projectId: selectProject, routeId: props.route.id, amount: props.route.extraStops + 1 }));
     };
 
     const removeExtraStopAction = () => {
-        dispatch(removeExtraStop({ id: props.route.id }));
+        dispatch(changeRouteExtraStops({ projectId: selectProject, routeId: props.route.id, amount: props.route.extraStops - 1 }));
     };
 
     const completeRouteAction = () => {

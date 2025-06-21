@@ -33,3 +33,5 @@ export * from "./updateTeamLeadCommand";
 export * from "./updateTeamNameCommand";
 export * from "./updateTeamPhoneCommand";
 export * from "./updateTeamTrailerTypeCommand";
+export * from "./changeExtraStopsCommand";
+export * from "./shareProjectCommand";

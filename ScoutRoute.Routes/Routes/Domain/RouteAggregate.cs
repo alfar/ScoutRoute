@@ -1,4 +1,5 @@
-﻿using ScoutRoute.Routes.Domain;
+﻿using JasperFx.Core;
+using ScoutRoute.Routes.Domain;
 using ScoutRoute.Routes.Routes.Domain.Events;
 
 namespace ScoutRoute.Routes.Routes.Domain;
@@ -106,6 +107,11 @@ public class RouteAggregate
         return new RouteOverfilledEvent(ProjectId, RouteId);
     }
 
+    public RouteStatusResetEvent ResetStatus()
+    {
+        return new RouteStatusResetEvent(ProjectId, RouteId);
+    }
+
     public RouteExtraStopsChangedEvent ChangeExtraStops(int extraStops)
     {
         EnsureNotDeleted();
@@ -161,6 +167,11 @@ public class RouteAggregate
     public void Apply(RouteOverfilledEvent @event)
     {
         Status = 2;
+    }
+
+    public void Apply(RouteStatusResetEvent @event)
+    {
+        Status = 0;
     }
 
     public void Apply(RouteDeletedEvent @event)

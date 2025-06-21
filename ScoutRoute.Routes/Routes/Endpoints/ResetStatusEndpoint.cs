@@ -2,24 +2,22 @@ using Marten;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using ScoutRoute.Routes.Contracts.Commands.Route;
 using ScoutRoute.Routes.Domain;
 using ScoutRoute.Routes.Routes.Domain;
 
 namespace ScoutRoute.Routes.Routes.Endpoints;
 
-internal static class AddCommentEndpoint
+internal static class ResetStatusEndpoint
 {
-    public const string Name = "AddComment";
+    public const string Name = "ResetStatus";
 
-    public static IEndpointRouteBuilder MapAddComment(this IEndpointRouteBuilder app)
+    public static IEndpointRouteBuilder MapResetStatus(this IEndpointRouteBuilder app)
     {
-        app.MapPost(
-                Contracts.Endpoints.Endpoints.Routes.AddComment,
+        app.MapPut(
+                Contracts.Endpoints.Endpoints.Routes.ResetStatus,
                 async (
                     Guid projectId,
                     Guid routeId,
-                    AddCommentCommand command,
                     IDocumentStore store,
                     CancellationToken cancellationToken
                 ) =>
@@ -40,7 +38,7 @@ internal static class AddCommentEndpoint
                     if (route is null)
                         return Results.NotFound();
 
-                    var ev = route.AddComment(command.Comment);
+                    var ev = route.ResetStatus();
 
                     session.Events.Append(routeAggregateId.GetStreamName(), ev);
 

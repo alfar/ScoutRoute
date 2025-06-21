@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RouteDto } from '../models';
-import { assignTeam, getRoute } from '../api/scoutroute';
+import { assignTeam, getRoute, addComment, changeExtraStops, markComplete, markOverfilled, completeStop, notFoundStop } from '../api/scoutroute';
 import { RootState } from './store';
 import { fetchTeam } from './teamSlice';
 
@@ -39,47 +39,94 @@ export const assignRouteTeam = createAsyncThunk<void, { projectId: string, teamI
     }
 );
 
+// Add a comment to a route
+export const addRouteComment = createAsyncThunk(
+  'route/addRouteComment',
+  async ({
+    projectId,
+    routeId,
+    comment,
+  }: {
+    projectId: string;
+    routeId: string;
+    comment: string;
+  }) => {
+    await addComment(projectId, routeId, { comment });
+    return { projectId, routeId, comment };
+  }
+);
+
+// Change extra stops for a route
+export const changeRouteExtraStops = createAsyncThunk(
+  'route/changeRouteExtraStops',
+  async ({
+    projectId,
+    routeId,
+    amount,
+  }: {
+    projectId: string;
+    routeId: string;
+    amount: number;
+  }) => {
+    await changeExtraStops(projectId, routeId, { extraStops: amount });
+    return { projectId, routeId, amount };
+  }
+);
+
+export const completeRoute = createAsyncThunk<void, RoutePayload, { state: RootState }>(
+    'route/completeRoute',
+    async ({ id }, thunkApi) => {
+        const state = thunkApi.getState();
+        const route = state.routes.routes.find(r => r.id === id);
+        if (!route) throw new Error('Route not found');
+        const projectId = (route as any).projectId || state.team.projectId;
+        await markComplete(projectId, id);
+        return;
+    }
+);
+
+export const overfilledRoute = createAsyncThunk<void, RoutePayload, { state: RootState }>(
+    'route/overfilledRoute',
+    async ({ id }, thunkApi) => {
+        const state = thunkApi.getState();
+        const route = state.routes.routes.find(r => r.id === id);
+        if (!route) throw new Error('Route not found');
+        const projectId = (route as any).projectId || state.team.projectId;
+        await markOverfilled(projectId, id);
+        return;
+    }
+);
+
+export const completeRouteStop = createAsyncThunk<void, UpdateStopPayload, { state: RootState }>(
+    'route/completeStop',
+    async ({ id }, thunkApi) => {
+        const state = thunkApi.getState();
+        const route = state.routes.routes.find(r => r.stops?.some(s => s.id === id));
+        if (!route) throw new Error('Route not found');
+        const projectId = (route as any).projectId || state.team.projectId;
+        // Here you would call an API to mark the stop as completed
+        await completeStop(projectId, id);
+        return;
+    }
+);
+
+export const notFoundRouteStop = createAsyncThunk<void, UpdateStopPayload, { state: RootState }>(
+    'route/notFoundStop',
+    async ({ id }, thunkApi) => {
+        const state = thunkApi.getState();
+        const route = state.routes.routes.find(r => r.stops?.some(s => s.id === id));
+        if (!route) throw new Error('Route not found');
+        const projectId = (route as any).projectId || state.team.projectId;
+        // Here you would call an API to mark the stop as not found
+        await notFoundStop(projectId, id);
+        return;
+    }
+);
+
 export const routeSlice = createSlice({
     name: 'route',
     initialState,
     reducers: {
-        addRoute: (state, action: PayloadAction<Route>) => {
-            state.routes.push(action.payload);
-        },
-        addComment: (state, action: PayloadAction<AddCommentPayload>) => {
-            const route = state.routes.find(r => r.id === action.payload.id);
-            if (route) {
-                route.comments?.push(action.payload.comment);
-            }
-        },
-        addExtraStop: (state, action: PayloadAction<RoutePayload>) => {
-            const route = state.routes.find(r => r.id === action.payload.id);
-            if (route) {
-                route.extraStops += 1;
-            }
-        },
-        removeExtraStop: (state, action: PayloadAction<RoutePayload>) => {
-            const route = state.routes.find(r => r.id === action.payload.id);
-            if (route && route.extraStops > 0) {
-                route.extraStops -= 1;
-            }
-        },
-        completeRoute: (state, action: PayloadAction<RoutePayload>) => {
-            const route = state.routes.find(r => r.id === action.payload.id);
-            if (route && route.status === 0) {
-                route.status = 1;
-
-                state.routes.sort(r => r.status);
-            }
-        },
-        overfilledRoute: (state, action: PayloadAction<RoutePayload>) => {
-            const route = state.routes.find(r => r.id === action.payload.id);
-            if (route && route.status === 0) {
-                route.status = 2;
-
-                state.routes.sort(r => r.status);
-            }
-        },
         resetRouteStatus: (state, action: PayloadAction<RoutePayload>) => {
             const route = state.routes.find(r => r.id === action.payload.id);
             if (route && route.status !== 0) {
@@ -116,8 +163,6 @@ export const routeSlice = createSlice({
             })) || [];
         });
 
-        //builder.addCase(fetchRoute.pending, (state, action) => {});
-
         builder.addCase(fetchRoute.fulfilled, (state, action) => {
             const route = state.routes.find(r => r.id === action.payload.id);
             if (route) {
@@ -132,8 +177,38 @@ export const routeSlice = createSlice({
                 });
             }
         });
+        
+        builder.addCase(addRouteComment.fulfilled, (state, action) => {
+            const route = state.routes.find(r => r.id === action.payload.routeId);
+            if (route) {
+                route.comments = route.comments || [];
+                route.comments.push(action.payload.comment);
+            }
+        });
+
+        builder.addCase(changeRouteExtraStops.fulfilled, (state, action) => {
+            const route = state.routes.find(r => r.id === action.payload.routeId);
+            if (route) {
+                route.extraStops = action.payload.amount;
+            }
+        });
+
+        builder.addCase(completeRoute.fulfilled, (state, action) => {
+            const route = state.routes.find(r => r.id === action.meta.arg.id);
+            if (route) {
+                route.status = 1; // Mark as complete
+                state.routes.sort((a, b) => a.status - b.status); // Sort by status
+            }
+        });
+
+        builder.addCase(overfilledRoute.fulfilled, (state, action) => {
+            const route = state.routes.find(r => r.id === action.meta.arg.id);
+            if (route) {
+                route.status = 2; // Mark as overfilled
+                state.routes.sort((a, b) => a.status - b.status); // Sort by status
+            }
+        });
     },
 });
 
-export const { addRoute, addComment, addExtraStop, removeExtraStop, completeRoute, overfilledRoute, resetRouteStatus, pickupStop, notFoundStop } = routeSlice.actions;
 export default routeSlice.reducer;

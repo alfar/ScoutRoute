@@ -10,4 +10,7 @@ export interface RouteDto {
   id: string;
   name: string;
   stops: StopDto[];
+  extraStops: number;
+  status: number;
+  comments: string[];
 }
