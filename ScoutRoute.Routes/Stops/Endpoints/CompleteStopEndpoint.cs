@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using ScoutRoute.Routes.Domain;
 using ScoutRoute.Routes.Stops.Domain;
 
 namespace ScoutRoute.Routes.Stops.Endpoints
@@ -10,6 +11,8 @@ namespace ScoutRoute.Routes.Stops.Endpoints
     {
         public const string Name = "CompleteStop";
 
+        /// <summary>
+        /// Add an endpoint that allows us to complete a stop.
         public static IEndpointRouteBuilder MapCompleteStop(this IEndpointRouteBuilder app)
         {
             app.MapPut(
@@ -22,10 +25,13 @@ namespace ScoutRoute.Routes.Stops.Endpoints
                     ) =>
                     {
                         using var session = store.LightweightSession();
-                        var stop = await session.LoadAsync<StopAggregate>(
-                            stopId,
+                        var aggregateId = new StopId(stopId);
+                        var stopAggregate = await session.Events.FetchForWriting<StopAggregate>(
+                            aggregateId.GetStreamName(),
                             cancellationToken
                         );
+
+                        var stop = stopAggregate.Aggregate;
                         if (stop == null)
                         {
                             return Results.NotFound();

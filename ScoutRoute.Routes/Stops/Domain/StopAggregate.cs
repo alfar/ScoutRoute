@@ -88,7 +88,7 @@ namespace ScoutRoute.Routes.Stops.Domain
             }
         }
 
-        public static StopCreatedEvent Create(
+        public static StopCreatedEvent CreateStop(
             ProjectId projectId,
             StopId stopId,
             ContactPerson contactPerson,

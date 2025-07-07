@@ -7,7 +7,7 @@ namespace ScoutRoute.Routes.Stops.Endpoints
         public static IEndpointRouteBuilder MapStopEndpoints(this IEndpointRouteBuilder endpoints)
         {
             endpoints
-                .MapCompleteStop()
+                .MapCompleteStop()  
                 .MapCreateStop()
                 .MapDeleteStop()
                 .MapGetAllStops()

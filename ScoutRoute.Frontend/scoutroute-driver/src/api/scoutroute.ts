@@ -2289,6 +2289,87 @@ export const useRemoveStop = <TError = AxiosError<unknown>, TContext = unknown>(
   return useMutation(mutationOptions, queryClient);
 };
 
+export const resetStatus = (
+  projectId: string,
+  routeId: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<void>> => {
+  return axios.default.put(
+    `https://localhost:7520/projects/${projectId}/routes/${routeId}/reset`,
+    undefined,
+    options,
+  );
+};
+
+export const getResetStatusMutationOptions = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof resetStatus>>,
+    TError,
+    { projectId: string; routeId: string },
+    TContext
+  >;
+  axios?: AxiosRequestConfig;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof resetStatus>>,
+  TError,
+  { projectId: string; routeId: string },
+  TContext
+> => {
+  const mutationKey = ["resetStatus"];
+  const { mutation: mutationOptions, axios: axiosOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, axios: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof resetStatus>>,
+    { projectId: string; routeId: string }
+  > = (props) => {
+    const { projectId, routeId } = props ?? {};
+
+    return resetStatus(projectId, routeId, axiosOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type ResetStatusMutationResult = NonNullable<
+  Awaited<ReturnType<typeof resetStatus>>
+>;
+
+export type ResetStatusMutationError = AxiosError<unknown>;
+
+export const useResetStatus = <
+  TError = AxiosError<unknown>,
+  TContext = unknown,
+>(
+  options?: {
+    mutation?: UseMutationOptions<
+      Awaited<ReturnType<typeof resetStatus>>,
+      TError,
+      { projectId: string; routeId: string },
+      TContext
+    >;
+    axios?: AxiosRequestConfig;
+  },
+  queryClient?: QueryClient,
+): UseMutationResult<
+  Awaited<ReturnType<typeof resetStatus>>,
+  TError,
+  { projectId: string; routeId: string },
+  TContext
+> => {
+  const mutationOptions = getResetStatusMutationOptions(options);
+
+  return useMutation(mutationOptions, queryClient);
+};
+
 export const completeStop = (
   projectId: string,
   stopId: string,

@@ -33,9 +33,10 @@ namespace ScoutRoute.Routes.Stops.Endpoints
                             );
                             var id = new ProjectId(projectId);
 
-                            var ev = StopAggregate.Create(
+                            var stopId = new StopId(command.Id);
+                            var ev = StopAggregate.CreateStop(
                                 id,
-                                new StopId(command.Id),
+                                stopId,
                                 command.ContactPerson,
                                 command.Title,
                                 command.Quantity,
@@ -45,7 +46,7 @@ namespace ScoutRoute.Routes.Stops.Endpoints
                                 ownerId
                             );
 
-                            session.Events.Append(id.GetStreamName(), ev);
+                            session.Events.Append(stopId.GetStreamName(), ev);
 
                             await session.SaveChangesAsync(cancellationToken);
                             return Results.NoContent();

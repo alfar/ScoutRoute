@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { assignRouteTeam } from "../../store/routeSlice";
+import { assignRouteTeam, fetchRoute } from "../../store/routeSlice";
 
 export default function RouteAddPage() {
     const params = useParams();
@@ -17,11 +17,13 @@ export default function RouteAddPage() {
 
     useEffect(() => {
         if (routeId && projectId && !routeLoaded) {
-            dispatch(assignRouteTeam({ projectId, teamId: team.id, routeId }));
+            dispatch(assignRouteTeam({ projectId, teamId: team.id, routeId })).then(() => {
+                dispatch(fetchRoute({ projectId, routeId }))
+            });
         }
-        else if (team.loaded)
+        else if (routeLoaded)
         {
-            navigate("/scoutroute/team");
+            navigate("/scoutroute/routes");
         }
     }, [routeId, projectId, team.id, routeLoaded]);
 

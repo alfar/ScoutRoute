@@ -36,9 +36,11 @@ public class RouteAggregate
         return new RouteCreatedEvent(projectId, routeId, name, stops.ToArray());
     }
 
-    public RouteAssignedToTeamEvent AssignTeam(TeamId teamId)
+    public RouteAssignedToTeamEvent? AssignTeam(TeamId teamId)
     {
         EnsureNotDeleted();
+        if (teamId == AssignedTeamId) return null;
+
         return new(ProjectId, RouteId, teamId);
     }
 

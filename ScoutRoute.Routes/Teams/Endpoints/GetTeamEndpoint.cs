@@ -26,7 +26,7 @@ namespace ScoutRoute.Routes.Teams.Endpoints
 
                     if (team is null) return Results.NotFound();
 
-                    return TypedResults.Ok(team.ToDto((await session.Query<Routes.Projections.Route>().Where(s => s.ProjectId == pId && s.AssignedTeamId == tId).ToListAsync(cancellationToken))));
+                    return TypedResults.Ok(team.ToDto((await session.Query<Routes.Projections.Route>().Where(s => s.ProjectId.Value == projectId && s.AssignedTeamId == tId).ToListAsync(cancellationToken))));
                 })
                 .Produces<TeamDto>()
                 .WithName(Name)

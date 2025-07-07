@@ -22,17 +22,10 @@ namespace ScoutRoute.Routes.Routes.Endpoints
                     async (
                         Guid projectId,
                         Guid routeId,
-                        UserId ownerId,
                         IQuerySession session,
                         CancellationToken cancellationToken
                     ) =>
                     {
-                        var id = new ProjectId(projectId);
-                        var project = await session.LoadAsync<Project>(id, cancellationToken);
-
-                        if (project is null || !project.Owners.Contains(ownerId))
-                            return Results.NotFound();
-
                         var route = await session.LoadAsync<Projections.Route>(
                             new RouteId(routeId),
                             cancellationToken
@@ -49,7 +42,6 @@ namespace ScoutRoute.Routes.Routes.Endpoints
                         return TypedResults.Ok(route.ToDto(stops));
                     }
                 )
-                .RequireAuthorization()
                 .ProducesProblem(StatusCodes.Status404NotFound)
                 .Produces<RouteDto>()
                 .WithName(Name)

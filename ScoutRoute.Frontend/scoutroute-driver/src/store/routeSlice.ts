@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RouteDto } from '../models';
-import { assignTeam, getRoute, addComment, changeExtraStops, markComplete, markOverfilled, completeStop, notFoundStop } from '../api/scoutroute';
+import { assignTeam, getRoute, addComment, changeExtraStops, markComplete, markOverfilled, completeStop, notFoundStop, resetStatus } from '../api/scoutroute';
 import { RootState } from './store';
 import { fetchTeam } from './teamSlice';
 
@@ -20,14 +20,10 @@ interface RoutePayload {
     id: string;
 }
 
-interface AddCommentPayload {
-    id: string;
-    comment: string;
-}
-
 export const fetchRoute = createAsyncThunk<RouteDto, { projectId: string, routeId: string }, { state: RootState }>(
     'route/fetchRoute',
     ({ projectId, routeId }, _thunkApi) => {
+        console.log("Oooh!");
         return getRoute(projectId, routeId).then(resp => resp.data);
     }
 );
@@ -41,36 +37,36 @@ export const assignRouteTeam = createAsyncThunk<void, { projectId: string, teamI
 
 // Add a comment to a route
 export const addRouteComment = createAsyncThunk(
-  'route/addRouteComment',
-  async ({
-    projectId,
-    routeId,
-    comment,
-  }: {
-    projectId: string;
-    routeId: string;
-    comment: string;
-  }) => {
-    await addComment(projectId, routeId, { comment });
-    return { projectId, routeId, comment };
-  }
+    'route/addRouteComment',
+    async ({
+        projectId,
+        routeId,
+        comment,
+    }: {
+        projectId: string;
+        routeId: string;
+        comment: string;
+    }) => {
+        await addComment(projectId, routeId, { comment });
+        return { projectId, routeId, comment };
+    }
 );
 
 // Change extra stops for a route
 export const changeRouteExtraStops = createAsyncThunk(
-  'route/changeRouteExtraStops',
-  async ({
-    projectId,
-    routeId,
-    amount,
-  }: {
-    projectId: string;
-    routeId: string;
-    amount: number;
-  }) => {
-    await changeExtraStops(projectId, routeId, { extraStops: amount });
-    return { projectId, routeId, amount };
-  }
+    'route/changeRouteExtraStops',
+    async ({
+        projectId,
+        routeId,
+        amount,
+    }: {
+        projectId: string;
+        routeId: string;
+        amount: number;
+    }) => {
+        await changeExtraStops(projectId, routeId, { extraStops: amount });
+        return { projectId, routeId, amount };
+    }
 );
 
 export const completeRoute = createAsyncThunk<void, RoutePayload, { state: RootState }>(
@@ -123,6 +119,18 @@ export const notFoundRouteStop = createAsyncThunk<void, UpdateStopPayload, { sta
     }
 );
 
+export const resetRouteStatus = createAsyncThunk<void, RoutePayload, { state: RootState }>(
+    'route/resetRouteStatus',
+    async ({ id }, thunkApi) => {
+        const state = thunkApi.getState();
+        const route = state.routes.routes.find(r => r.id === id);
+        if (!route) throw new Error('Route not found');
+        const projectId = (route as any).projectId || state.team.projectId;
+        await resetStatus(projectId, id);
+        return;
+    }
+);
+
 export const routeSlice = createSlice({
     name: 'route',
     initialState,
@@ -135,26 +143,9 @@ export const routeSlice = createSlice({
                 state.routes.sort(r => r.status);
             }
         },
-        pickupStop: (state, action: PayloadAction<UpdateStopPayload>) => {
-            state.routes.map(r => {
-                const stop = r.stops?.find(s => s.id === action.payload.id);
-                if (stop) {
-                    stop.status = 1;
-                }
-            });
-        },
-        notFoundStop: (state, action: PayloadAction<UpdateStopPayload>) => {
-            state.routes.map(r => {
-                const stop = r.stops?.find(s => s.id === action.payload.id);
-                if (stop) {
-                    stop.status = 2;
-                }
-            });
-        },
     },
     extraReducers: (builder) => {
         builder.addCase(fetchTeam.fulfilled, (state, action) => {
-            debugger;
             state.routes = action.payload.routes?.map(route => ({
                 ...route,
                 loaded: false,
@@ -177,7 +168,7 @@ export const routeSlice = createSlice({
                 });
             }
         });
-        
+
         builder.addCase(addRouteComment.fulfilled, (state, action) => {
             const route = state.routes.find(r => r.id === action.payload.routeId);
             if (route) {
@@ -190,6 +181,14 @@ export const routeSlice = createSlice({
             const route = state.routes.find(r => r.id === action.payload.routeId);
             if (route) {
                 route.extraStops = action.payload.amount;
+            }
+        });
+
+        builder.addCase(resetRouteStatus.fulfilled, (state, action) => {
+            const route = state.routes.find(r => r.id === action.meta.arg.id);
+            if (route) {
+                route.status = 0; // Reset status
+                state.routes.sort((a, b) => a.status - b.status); // Sort by status
             }
         });
 
@@ -206,6 +205,44 @@ export const routeSlice = createSlice({
             if (route) {
                 route.status = 2; // Mark as overfilled
                 state.routes.sort((a, b) => a.status - b.status); // Sort by status
+            }
+        });
+
+        builder.addCase(completeRouteStop.fulfilled, (state, action) => {
+            const route = state.routes.find(r => r.stops?.some(s => s.id === action.meta.arg.id));
+            if (route) {
+                const stop = route.stops?.find(s => s.id === action.meta.arg.id);
+                if (stop) {
+                    stop.status = 1; // Mark stop as completed
+                }
+            }
+        });
+
+        builder.addCase(notFoundRouteStop.fulfilled, (state, action) => {
+            const route = state.routes.find(r => r.stops?.some(s => s.id === action.meta.arg.id));
+            if (route) {
+                const stop = route.stops?.find(s => s.id === action.meta.arg.id);
+                if (stop) {
+                    stop.status = 2; // Mark stop as not found
+                }
+            }
+        });
+
+        builder.addCase(assignRouteTeam.fulfilled, (state, action) => {
+            const { routeId } = action.meta.arg;
+            const route = state.routes.find(r => r.id === routeId);
+            if (route) {
+                route.loaded = false;
+            }
+            else {
+                state.routes.push({
+                    id: routeId,
+                    loaded: false,
+                    extraStops: 0,
+                    status: 0,
+                    stops: [],
+                    comments: [],
+                });
             }
         });
     },

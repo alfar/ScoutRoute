@@ -1,5 +1,5 @@
 import { useAppDispatch } from "../../store/hooks";
-import { notFoundStop, pickupStop } from "../../store/routeSlice";
+import { notFoundRouteStop, completeRouteStop } from "../../store/routeSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleCheck, faCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import NavigateButton from "../NavigateButton/NavigateButton";
@@ -14,12 +14,12 @@ export default function StopActions(props: StopActionsProps) {
     const dispatch = useAppDispatch();
 
     const pickupAction = () => {
-        dispatch(pickupStop({ id: props.id }));
+        dispatch(completeRouteStop({ id: props.id }));
         props.onSaved();
     };
 
     const notFoundAction = () => {
-        dispatch(notFoundStop({ id: props.id }));
+        dispatch(notFoundRouteStop({ id: props.id }));
         props.onSaved();
     };
 

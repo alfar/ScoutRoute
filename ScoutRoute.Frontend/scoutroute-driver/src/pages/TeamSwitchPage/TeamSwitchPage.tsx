@@ -13,14 +13,15 @@ export default function TeamSwitchPage() {
     const id = params["id"];
 
     useEffect(() => {
-        if (id && projectId && team.loaded && team.id !== id) {
+        debugger;
+        if (id && projectId && team.id !== id) {
             dispatch(fetchTeam({ projectId, id }));
         }
         else if (team.loaded)
         {
             navigate("/scoutroute/team");
         }
-    }, [team.id, team.loaded]);
+    }, [id, projectId, team.id, team.loaded]);
 
     return (
         <div className="h-[90vh] border-2 border-t-0 w-full border-gray-200 flex flex-col justify-center content-center items-center">

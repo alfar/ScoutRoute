@@ -19,6 +19,7 @@ namespace ScoutRoute.Routes.Endpoints
             endpoints.MapMarkComplete();
             endpoints.MapMarkOverfilled();
             endpoints.MapRemoveStop();
+            endpoints.MapResetStatus();
             endpoints.MapUnassignTeam();
             endpoints.MapUpdateRoute();
         }

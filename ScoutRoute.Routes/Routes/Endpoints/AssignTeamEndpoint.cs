@@ -42,9 +42,12 @@ namespace ScoutRoute.Routes.Routes.Endpoints
 
                         var ev = route.AssignTeam(new TeamId(command.TeamId));
 
-                        session.Events.Append(routeAggregateId.GetStreamName(), ev);
+                        if (ev is not null)
+                        {
+                            session.Events.Append(routeAggregateId.GetStreamName(), ev);
 
-                        await session.SaveChangesAsync(cancellationToken);
+                            await session.SaveChangesAsync(cancellationToken);
+                        }
 
                         return Results.NoContent();
                     }
