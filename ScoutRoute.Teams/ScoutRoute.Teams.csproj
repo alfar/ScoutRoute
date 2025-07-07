@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Aspire.Npgsql" Version="9.2.1" />
+		<PackageReference Include="Marten" Version="7.40.1" />
+		<PackageReference Include="OpenTelemetry.Api" Version="1.12.0" />
+		<PackageReference Include="StronglyTypedId" Version="1.0.0-beta08" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\ScoutRoute.Teams.Contracts\ScoutRoute.Teams.Contracts.csproj" />
+		<ProjectReference Include="..\ScoutRoute.Shared\ScoutRoute.Shared.csproj" />
+	</ItemGroup>
+</Project>

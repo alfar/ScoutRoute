@@ -12,9 +12,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Web", "ScoutRout
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Tests", "ScoutRoute.Tests\ScoutRoute.Tests.csproj", "{BEB384D7-95D9-4B4F-9D11-E6457CD62132}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Payments", "ScoutRoute.Repository\ScoutRoute.Payments.csproj", "{E95F3AF8-7E61-4E9E-99B1-89C4A9F369DC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Payments", "ScoutRoute.Payments\ScoutRoute.Payments.csproj", "{E95F3AF8-7E61-4E9E-99B1-89C4A9F369DC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Shared", "ScoutRoute.Shared\ScoutRoute.Shared.csproj", "{9DCB6A8B-4134-4496-815B-F9527CDAB0A4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Payments.Contracts", "ScoutRoute.Payments.Contracts\ScoutRoute.Payments.Contracts.csproj", "{D5720208-A272-43CD-B56E-39D68214E399}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Routes.Contracts", "ScoutRoute.Routes.Contracts\ScoutRoute.Routes.Contracts.csproj", "{A4C5B4BE-E1B2-4DF0-87F3-B3F07EEF8A24}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScoutRoute.Routes", "ScoutRoute.Routes\ScoutRoute.Routes.csproj", "{FD07A1D1-1B60-4D77-BB34-B68CAB96D3FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +56,18 @@ Global
 		{9DCB6A8B-4134-4496-815B-F9527CDAB0A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DCB6A8B-4134-4496-815B-F9527CDAB0A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DCB6A8B-4134-4496-815B-F9527CDAB0A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5720208-A272-43CD-B56E-39D68214E399}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5720208-A272-43CD-B56E-39D68214E399}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5720208-A272-43CD-B56E-39D68214E399}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5720208-A272-43CD-B56E-39D68214E399}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4C5B4BE-E1B2-4DF0-87F3-B3F07EEF8A24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4C5B4BE-E1B2-4DF0-87F3-B3F07EEF8A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4C5B4BE-E1B2-4DF0-87F3-B3F07EEF8A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4C5B4BE-E1B2-4DF0-87F3-B3F07EEF8A24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD07A1D1-1B60-4D77-BB34-B68CAB96D3FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD07A1D1-1B60-4D77-BB34-B68CAB96D3FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD07A1D1-1B60-4D77-BB34-B68CAB96D3FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD07A1D1-1B60-4D77-BB34-B68CAB96D3FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

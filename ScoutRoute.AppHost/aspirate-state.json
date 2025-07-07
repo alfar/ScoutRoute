@@ -1,0 +1,28 @@
+{
+  "projectPath": ".",
+  "outputPath": "aspirate-output",
+  "containerImageTags": [
+    "latest"
+  ],
+  "containerBuilder": "docker",
+  "outputFormat": "compose",
+  "privateRegistryEmail": "aspir8@aka.ms",
+  "useCustomNamespace": false,
+  "secrets": {
+    "salt": "4\u002B8vnsWE1WiJ1RK8",
+    "hash": "xa/Od0wGoZ32g\u002BUXrnhOoRMGN2qQy1L7fabnqppyIJ0=",
+    "secrets": {
+      "mongo-password": {
+        "value": "4\u002B8vnsWE1WiJ1RK8POQ4oHb3qvzmweageVMu00V8/Na4/16RAwDYRENE/ev8iI6JDJ0="
+      },
+      "cache": {},
+      "mongo": {},
+      "scoutroute": {},
+      "apiservice": {
+        "ConnectionStrings__scoutroute": "4\u002B8vnsWE1WiJ1RK8WCqERmrIyr3SeBkZM\u002BJZ8U9x5oSE4U3KFHj9EXsU\u002BoKvh4r/GLVwYibxJu/kP1zUzFrmQJDWnYCD8Mze3Ea0k68xlOwoywVNeqeX8ip7rI83i6GBwQgzFnjq0QZcUW1RetDKk8aeNKBSLwtmxHm5SytvBztMJFZFBSE=",
+        "ConnectionStrings__cache": "4\u002B8vnsWE1WiJ1RK8uqX77tdsMLc/deJc\u002BMJqa0F/64uOvxnDDG4="
+      }
+    }
+  },
+  "processAllComponents": true
+}

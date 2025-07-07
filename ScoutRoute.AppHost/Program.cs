@@ -3,18 +3,20 @@ using Aspire.Hosting;
 var builder = DistributedApplication.CreateBuilder(args);
 
 var cache = builder.AddRedis("cache");
-var elasticsearch = builder.AddElasticsearch("elasticsearch");
+
+var postgres = builder.AddPostgres("scoutroutedb").WithPgAdmin().WithLifetime(ContainerLifetime.Persistent).WithDataVolume("scoutroutepg");
+var scoutdb = postgres.AddDatabase("scoutroutepg", "scoutroute");
+
+var mongo = builder.AddMongoDB("mongo").WithMongoExpress().WithLifetime(ContainerLifetime.Persistent);
+
+var mongodb = mongo.AddDatabase("scoutroute");
 
 var apiService = builder.AddProject<Projects.ScoutRoute_ApiService>("apiservice")
-    .WithReference(elasticsearch)
+    .WithReference(mongodb)
+    .WaitFor(mongodb)
+    .WithReference(scoutdb)
+    .WaitFor(scoutdb)
     .WithReference(cache);
-
-builder.AddProject<Projects.ScoutRoute_Web>("webfrontend")
-    .WithExternalHttpEndpoints()
-    .WithReference(cache)
-    .WaitFor(cache)
-    .WithReference(apiService)
-    .WaitFor(apiService);
 
 builder.AddNpmApp("frontend", "../ScoutRoute.Frontend/scout-route", "dev")
     .WithHttpEndpoint(env: "PORT")
